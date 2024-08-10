@@ -4,12 +4,19 @@
             <div>Thought Threads</div>
         </div>
         <div class="leftCol navbar w-5/6 flex items-center p-2 justify-center">
-            <div class="navItem p-2 px-4 {{ Request::routeIs('home') ? 'border-b' : '' }}"><a href="{{route('home')}}">Home</a></div>
-            <div class="navItem p-2 px-4 {{ Request::routeIs('about') ? 'border-b' : '' }}"><a href="{{route('about')}}">About</a></div>
-            <div class="navItem p-2 px-4 {{ Request::routeIs('contact') ? 'border-b' : '' }}"><a href="{{route('contact')}}">Contact</a></div>
-            <div class="navItem p-2 px-4 {{ Request::routeIs('register') ? 'border-b' : '' }}"><a href="{{route('register')}}">Register</a></div>
-            <div class="navItem p-2 px-4 {{ Request::routeIs('Login') ? 'border-b' : '' }}"><a href="{{route('login')}}">Login</a></div>
-            <div class="navItem p-2 px-4 {{ Request::routeIs('dashboard') ? 'border-b' : '' }}"><a href="{{route('dashboard')}}">Dashboard</a></div>
+            <a href="{{route('home')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('home') ? 'border-b' : '' }}">Home</div></a>
+            <a href="{{route('about')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('about') ? 'border-b' : '' }}">About</div></a>
+            <a href="{{route('contact')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('contact') ? 'border-b' : '' }}">Contact</div></a>
+            <a href="{{route('register')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('register') ? 'border-b' : '' }}">Register</div></a>
+            <a href="{{route('login')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('login') ? 'border-b' : '' }}">Login</div></a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <div class="navItem p-2 px-4">Logout</div>
+            </a>
+            <a href="{{route('dashboard')}}"><div class="navItem p-2 px-4 {{ Request::routeIs('dashboard') ? 'border-b' : '' }}">Dashboard</div></a>
         </div>
     </div>
 </header>
+<!-- Logout form -->
+<form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+    @csrf
+</form>

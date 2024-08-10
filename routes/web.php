@@ -10,14 +10,41 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 
+// User Admin Controllers
+use App\Http\Controllers\Admin\AdminController;
+
 // use Models
 use App\Models\Customer;
 
+/*------------------------
+***************************
+** Website Routes
+***************************
+--------------------------*/
 
-// Website Routes
+// Homepage Route
 Route::get('/', [HomeController::class,'index'])->name('home');
-Route::get('/login', [LoginController::class,'index'])->name('login');
+
+// Login Form Routes and Authentication
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/loginUser', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Registration Route
 Route::get('/register', [RegisterController::class,'index'])->name('register');
+Route::post('/registerUser', [RegisterController::class, 'register']);
+
 Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+
+
+/*------------------------
+***************************
+** Admin Routes
+***************************
+--------------------------*/
+
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'adminpanel'])->name('admin.dashboard');
+});

@@ -1,39 +1,41 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Customer;
 
 class RegisterController extends Controller
 {
-    //
-    public function index(){
-        return view('auth/register');
+    // Show the registration form
+    public function index()
+    {
+        return view('auth.register'); // Ensure the view file is named correctly
     }
-    public function register(Request $request){
 
+    // Handle the registration process
+    public function register(Request $request)
+    {
+        // Validate the request data
         $request->validate([
-            'fullname' => 'required',
-            'email' => 'required|email',
-            'number' => 'required|min:10',
-            'password' => 'required',
+            'fullname' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:customers',
+            'number' => 'required|string|min:10|max:15', // Adjusted validation for phone numbers
+            'password' => 'required|string|min:8', // Added 'confirmed' rule for password confirmation
         ]);
 
-        // Insert Data
+        // Create a new customer
         $customer = new Customer;
 
-        $customer->fullname = $request['fullname'];
-        $customer->email = $request['email'];
-        $customer->password = $request['password'];
-        $customer->number =  $request['number'];
-        $customer->isAdmin = 0;
+        $customer->fullname = $request->input('fullname');
+        $customer->email = $request->input('email');
+        $customer->password = Hash::make($request->input('password')); // Hash the password
+        $customer->number = $request->input('number');
+        $customer->isAdmin = 0; // Default value for non-admin users
         $customer->save();
 
-        return redirect('/dashboard');
-
+        // Redirect to the dashboard or login page after registration
+        return redirect('/login')->with('success', 'Registration successful. Please log in.');
     }
-
-    
-
 }
+
