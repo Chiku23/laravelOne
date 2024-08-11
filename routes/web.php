@@ -36,8 +36,15 @@ Route::post('/registerUser', [RegisterController::class, 'register']);
 
 Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
-Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
 
+Route::prefix('dashboard')->group(function(){
+    Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/account-setting', [DashboardController::class,'accountSetting'])->name('accountsetting');
+    Route::post('/account-setting/updateUser', [DashboardController::class,'updateUser'])->name('updateUser');
+    Route::get('/update-password', [DashboardController::class,'updatePassword'])->name('updatepassword');
+    Route::post('/update-password/updateUserPassword', [DashboardController::class,'updateUserPassword'])->name('updateUserPassword');
+    
+});
 
 /*------------------------
 ***************************

@@ -17,7 +17,7 @@
             @if (Auth::check())
                 <!-- Show these items if the user is logged in -->
                 <a href="{{ route('dashboard') }}">
-                    <div class="navItem p-2 px-4 {{ Request::routeIs('dashboard') ? 'border-b' : '' }}">Dashboard</div>
+                    <div class="navItem p-2 px-4 {{ Request::is('dashboard*') ? 'border-b' : '' }}">Dashboard</div>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <div class="navItem p-2 px-4">Logout</div>
@@ -34,8 +34,3 @@
         </div>
     </div>
 </header>
-
-<!-- Logout form -->
-<form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
-    @csrf
-</form>

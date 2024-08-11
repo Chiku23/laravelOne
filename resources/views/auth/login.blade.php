@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-<div class="LoginMain">
+<div class="LoginMain md:w-1/4 w-full mx-auto">
     <div class="FormTitle flex mx-auto justify-center font-bold">
         <h1 class="mb-2 text-2xl">Login</h1>
     </div>
@@ -20,7 +20,7 @@
             <button type="submit" class="bg-green-500 px-5 py-2 rounded">Login</button>
         </div>
         <div class="registerUser text-center mt-2">
-            Don't have a account Register <a href="{{route('register')}}"><u class="text-blue-500">Here</u></a>
+            Don't have a account Register? <a href="{{route('register')}}"><u class="text-blue-500">Here</u></a>
         </div>
     </form>
 </div>

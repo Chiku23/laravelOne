@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-<div class="RegistrationMain min-w-[25vw]">
+<div class="RegistrationMain md:w-1/3 w-full mx-auto">
     <div class="FormTitle flex mx-auto justify-center font-bold">
         <h1 class="mb-2 text-2xl">Registration Form</h1>
     </div>

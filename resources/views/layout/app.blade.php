@@ -12,7 +12,7 @@
     {{-- Include Header --}}
     @include('includes.header')
 
-    <div class="flex-grow max-w-1200 mx-auto mt-4">
+    <div class="flex flex-grow max-w-1200 mx-auto w-full">
         @yield('content')
     </div>
 
