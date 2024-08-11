@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Customer;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
@@ -18,24 +18,23 @@ class RegisterController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'fullname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:customers',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'number' => 'required|string|min:10|max:15', // Adjusted validation for phone numbers
             'password' => 'required|string|min:8', // Added 'confirmed' rule for password confirmation
         ]);
 
-        // Create a new customer
-        $customer = new Customer;
+        // Create a new user
+        $user = new User;
 
-        $customer->fullname = $request->input('fullname');
-        $customer->email = $request->input('email');
-        $customer->password = Hash::make($request->input('password')); // Hash the password
-        $customer->number = $request->input('number');
-        $customer->isAdmin = 0; // Default value for non-admin users
-        $customer->save();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password')); // Hash the password
+        $user->number = $request->input('number');
+        $user->save();
 
         // Redirect to the dashboard or login page after registration
-        return redirect('/login')->with('success', 'Registration successful. Please log in.');
+        return redirect('/login')->with('success', 'User Registration successful. Please log in.');
     }
 }
 

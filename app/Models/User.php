@@ -11,6 +11,18 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // Specify the table name if different from the default
+    protected $table = 'users';
+
+    // Specify the primary key if different from the default
+    protected $primaryKey = 'user_id';
+
+    // Specify if the primary key is auto-incrementing
+    public $incrementing = true;
+
+    // Specify the data types for the primary key
+    protected $keyType = 'int';
+
     /**
      * The attributes that are mass assignable.
      *

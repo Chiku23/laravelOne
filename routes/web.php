@@ -14,7 +14,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminController;
 
 // use Models
-use App\Models\Customer;
+use App\Models\User;
 
 /*------------------------
 ***************************

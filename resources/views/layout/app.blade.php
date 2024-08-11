@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Link Bootstrap and FontAwesome from Directory -->
-    <link rel="stylesheet" href="{{ asset('css/fontAwesome/fontawesome.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/fontAwesome/fontawesome.min.css') }}"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
     <title>Document</title>
 </head>
@@ -22,5 +23,7 @@
     @include('includes.footer')
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery-migrate.min.js')}}"></script>
+    {{-- Include Custom Js Scripts --}}
+    <script src="{{asset('js/customScripts/user-frontend.js')}}"></script>
 </body>
 </html>
