@@ -17,24 +17,26 @@
 
 
 <div class="DashboardMain">
-    <div class="ContainerTitle w-1/2 flex flex-col mx-auto justify-center">
-        <div class="PageTitle">
-            <h1 class="mb-2 text-2xl">User DashBoard</h1>
-        </div>
-        <div class="UserDetails">
-            <div class="helloMsg">
-                Welcome {{$userName}}... 
+    <div class="ContainerTitle flex mx-auto justify-center mx-8">
+        <div class="leftSidebar bg-indigo-950 md:min-w-60 p-4 border-r">
+            <div class="ActionGroup">
+                <div class="Actions flex flex-col">
+                    <a href="" class="bg-indigo-800 px-4 py-2 border-l-4">My Blogs</a>
+                    <a href="{{route('home')}}" class="bg-indigo-800 px-4 py-2 border-l-4 border-b-1">Account Settings</a>
+                </div>
             </div>
-            <div class="Details">
-                <div class="UserEmail">
-                    Your E-Mail ID: {{$userEmail}}
+        </div>
+        <div class="RightMain p-4">
+            <div class="Content">
+                <div class="WelcomeUser">
+                    Hello {{$userName}}.
                 </div>
-                <div class="UserPhone">
-                    Your Phone: {{$userNumber}}
-                </div>
+                <br>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, vero nemo illum eum neque inventore tenetur fuga facilis odio dolores. Quod labore mollitia enim consequatur qui, necessitatibus omnis. Vero officiis cum iure molestias aliquam, eaque, incidunt sapiente ex ut earum autem, distinctio iste dolor mollitia consectetur recusandae quisquam. Officia fuga officiis non veritatis distinctio autem labore qui atque delectus, fugit quis exercitationem alias necessitatibus eligendi ipsum assumenda possimus ratione quasi? Quasi excepturi in laborum quo et accusantium consequatur officiis, maiores omnis voluptas ipsa eos quae officia error autem magni, libero assumenda! Cupiditate quidem unde velit quo quibusdam saepe architecto tempora.
             </div>
         </div>
     </div>
 </div>
 <x-error-popup :errors="$errors" :successMessage="session('success')"/>
+
 @endsection

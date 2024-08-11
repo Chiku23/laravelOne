@@ -5,14 +5,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\User;
 
 class LoginController extends Controller
 {
     // Show the login form
     public function index()
     {
-        return view('auth.login'); // Ensure the view file is named correctly
+        return view('auth.login');
     }
 
     // Handle login request
@@ -24,19 +24,33 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // Attempt to authenticate the user
-        $credentials = $request->only('email', 'password');
+        // Create a User object and retrieve the user by email
+        $user = new User(); // Create a new User instance
+        $user = $user->where('email', $request->email)->first(); // Retrieve the user
 
-        Log::info('Login attempt', ['attempt', Auth::attempt($credentials)]);
-        if (Auth::attempt($credentials)) {
-            // Authentication passed
-            return redirect()->intended('dashboard'); // Redirect to dashboard or intended URL
+        if (!$user) {
+            // User not found
+            return back()->withErrors([
+                'ErrorMSG' => 'User not found.',
+            ]);
         }
-        
-        // Authentication failed
-        return back()->withErrors([
-            'ErrorMSG' => 'The provided credentials do not match our records.',
-        ]);
+
+        // Check if the password is correct
+        if (!Hash::check($request->password, $user->password)) {
+            // Password is incorrect
+            return back()->withErrors([
+                'ErrorMSG' => 'Password is incorrect.',
+            ]);
+        }
+
+        // Log in the user
+        Auth::login($user);
+
+        // Log the successful login attempt
+        Log::info('User logged in', ['email' => $user->email]);
+
+        // Redirect to intended URL
+        return redirect()->intended('dashboard');
     }
 
     // Handle logout request

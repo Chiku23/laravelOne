@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Link Bootstrap and FontAwesome from Directory -->
-    {{-- <link rel="stylesheet" href="{{ asset('css/fontAwesome/fontawesome.min.css') }}"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>{{config('app.name')}}</title>
 </head>
-<body class="bg-indigo-900 text-white">
+<body class="bg-gray-900 text-white flex flex-col min-h-screen">
     {{-- Include Header --}}
     @include('includes.header')
 
-    <div class="mt-4 min-h-[70vh] max-w-1200 mx-auto">
+    <div class="flex-grow max-w-1200 mx-auto mt-4">
         @yield('content')
     </div>
 
-
     {{-- Include Footer --}}
     @include('includes.footer')
+
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery-migrate.min.js')}}"></script>
     {{-- Include Custom Js Scripts --}}

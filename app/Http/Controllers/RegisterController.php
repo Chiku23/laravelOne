@@ -21,7 +21,11 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'number' => 'required|string|min:10|max:15', // Adjusted validation for phone numbers
-            'password' => 'required|string|min:8', // Added 'confirmed' rule for password confirmation
+            'password' => 'required|string|min:8|confirmed', // Added 'confirmed' rule for password confirmation
+        ],
+        [
+            'email.unique' => 'This email is already registered. Please use a different one.',
+            'password.confirmed' => 'The password confirmation does not match.',
         ]);
 
         // Create a new user

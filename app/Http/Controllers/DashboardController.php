@@ -22,7 +22,7 @@ class DashboardController extends Controller
             return view('templates.dashboard', compact('user'));
         } else {
             // If no user is logged in, redirect to the login page or show an error
-            return redirect()->route('login')->withErrors(['ErrorMSG' => 'Please login before accessing DashBoard.']);
+            return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);
         }
     }
 }
