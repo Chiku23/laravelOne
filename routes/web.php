@@ -13,9 +13,6 @@ use App\Http\Controllers\ContactController;
 // User Admin Controllers
 use App\Http\Controllers\Admin\AdminController;
 
-// use Models
-use App\Models\User;
-
 /*------------------------
 ***************************
 ** Website Routes
@@ -39,8 +36,13 @@ Route::get('/contact', [ContactController::class,'index'])->name('contact');
 
 Route::prefix('dashboard')->group(function(){
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
     Route::get('/account-setting', [DashboardController::class,'accountSetting'])->name('accountsetting');
     Route::post('/account-setting/updateUser', [DashboardController::class,'updateUser'])->name('updateUser');
+
+    Route::get('/add-blog', [DashboardController::class,'addBlog'])->name('addblog');
+    Route::post('/add-blog/publishBlog', [DashboardController::class,'publishBlog'])->name('publishBlog');
+
     Route::get('/update-password', [DashboardController::class,'updatePassword'])->name('updatepassword');
     Route::post('/update-password/updateUserPassword', [DashboardController::class,'updateUserPassword'])->name('updateUserPassword');
     

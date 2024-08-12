@@ -16,7 +16,7 @@ export default {
             },
             maxWidth:{
                 '1200': '1200px',
-            }
+            },
         },
     },
 

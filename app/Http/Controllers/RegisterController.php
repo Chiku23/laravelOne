@@ -36,9 +36,9 @@ class RegisterController extends Controller
         $user->password = Hash::make($request->input('password')); // Hash the password
         $user->number = $request->input('number');
         $user->save();
-
+        $request->session()->flash('success', 'User Registration successful. Please log in.');
         // Redirect to the dashboard or login page after registration
-        return redirect('/login')->with('success', 'User Registration successful. Please log in.');
+        return redirect('/login');
     }
 }
 

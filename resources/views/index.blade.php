@@ -1,24 +1,30 @@
 @extends('layout.app')
 
 @section('content')
-<div class="IndexMain">
+<div class="IndexMain w-full">
     <div class="Notice text-center">
         This section is for Notices
     </div>
     <div class="indexContent flex">
         <div class="leftCol w-3/4">
            <div class="blogsContainer">
-                @for($i=0;$i<5;$i++)
-                        <div class="blogs flex gap-4 my-4 p-2 bg-gray-800 rounded shadow-lg">
-                    <div class="imgBox h-32 w-32 flex-shrink-0">
-                        <img src="https://placehold.co/600x400" alt="ImageTitle" class="w-full h-full object-cover">
-                    </div>
-                    <div class="contentBox flex-grow">
-                        <div class="BlogTitle">Blog Title</div>
-                        <div class="BlogDescription">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim aperiam ipsa veritatis iusto? Modi asperiores voluptatum saepe harum officiis, rem doloribus. Similique, nostrum! Sunt possimus sint illum, aut quisquam rerum.</div>
-                    </div>
+                <div class="blogs flex my-4 p-4 bg-gray-800 rounded shadow-lg">
+                    @if(!empty($blogs))
+                        @foreach($blogs as $blog)
+                            <div class="contentBox">
+                                <div class="BlogAuthor font-mono text-slate-400 mb-2">
+                                    Author: {{ $blog->user->name }}
+                                </div>
+                                <div class="BlogTitle mb-2 pb-2 text-2xl border-b border-slate-500 font-bold text-slate-200 font-mono">
+                                    {{$blog->title}}
+                                </div>
+                                <div class="BlogDescription font-mono text-slate-300">
+                                    {{$blog->description}}
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
-                @endfor
            </div>
         </div>
         <div class="rightCol w-1/4 text-right">

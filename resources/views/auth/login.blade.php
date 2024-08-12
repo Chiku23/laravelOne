@@ -24,7 +24,4 @@
         </div>
     </form>
 </div>
-
-<x-error-popup :errors="$errors" :successMessage="session('success')"/>
-
 @endsection

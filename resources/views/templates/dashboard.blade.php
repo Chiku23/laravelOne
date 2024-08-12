@@ -22,6 +22,9 @@
                     <a href="{{route('dashboard')}}" class="">
                         <div class="{{Request::routeIs('dashboard')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">My Blogs</div>
                     </a>
+                    <a href="{{route('addblog')}}" class="">
+                        <div class="{{Request::routeIs('addblog')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Add a Blog</div>
+                    </a>
                     <a href="{{route('accountsetting')}}" class=""><div class="{{Request::routeIs('accountsetting')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Account Settings</div></a>
                     <a href="{{route('updatepassword')}}" class=""><div class="{{Request::routeIs('updatepassword')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Update Password</div></a>
                 </div>
@@ -38,6 +41,4 @@
         </div>
     </div>
 </div>
-<x-error-popup :errors="$errors" :successMessage="session('success')"/>
-
 @endsection

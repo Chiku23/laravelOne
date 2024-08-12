@@ -34,3 +34,4 @@
         </div>
     </div>
 </header>
+<x-error-popup :errors="$errors" :successMessage="session('status')"/>
