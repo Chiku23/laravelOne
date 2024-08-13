@@ -11,20 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
-    // Define Functions 
-    public function index(){
-        // Get the currently authenticated user
-        $user = Auth::user(); // This assumes user is the authenticated user
-        if ($user) {
-            // Set a flash message
-            session()->flash('status', '');
-            // Pass the authenticated user's data to the dashboard view
-            return view('templates.dashboard', compact('user'));
-        } else {
-            // If no user is logged in, redirect to the login page or show an error
-            return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);
-        }
-    }
+    /*---------------------
+    ***********************
+    * Define Functions 
+    ***********************
+    -----------------------**/
 
     // Dashboard user Account Settings page
     public function accountSetting(){
@@ -133,5 +124,23 @@ class DashboardController extends Controller
 
         // Redirect or return a response
         return redirect()->back()->with('status', 'Blog published successfully!');
+    }
+
+    // DashBoard Get the blogs published by the specific user
+    public function getUsersBlogs(){
+        // Get the currently authenticated user
+        $user = Auth::user(); // This assumes user is the authenticated user
+        if ($user) {
+            $userId = Auth::user()->user_id;
+            // Retrieve blogs related to the user
+            $blogs = Blog::where('created_by', $userId)->get();
+
+            return view('templates.dashboard-parts.user-blogs', compact('blogs','user'));
+        } else {
+            // If no user is logged in, redirect to the login page or show an error
+            return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);
+        }
+
+        
     }
 }

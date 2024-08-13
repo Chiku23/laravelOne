@@ -35,7 +35,7 @@ Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 
 Route::prefix('dashboard')->group(function(){
-    Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class,'getUsersBlogs'])->name('dashboard');
 
     Route::get('/account-setting', [DashboardController::class,'accountSetting'])->name('accountsetting');
     Route::post('/account-setting/updateUser', [DashboardController::class,'updateUser'])->name('updateUser');

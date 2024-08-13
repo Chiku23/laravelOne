@@ -8,9 +8,9 @@
     <div class="indexContent flex">
         <div class="leftCol w-3/4">
            <div class="blogsContainer">
-                <div class="blogs flex my-4 p-4 bg-gray-800 rounded shadow-lg">
-                    @if(!empty($blogs))
-                        @foreach($blogs as $blog)
+               @if(!empty($blogs))
+                    @foreach($blogs as $blog)
+                        <div class="blogs flex my-4 p-4 bg-gray-800 rounded shadow-lg">
                             <div class="contentBox">
                                 <div class="BlogAuthor font-mono text-slate-400 mb-2">
                                     Author: {{ $blog->user->name }}
@@ -22,9 +22,9 @@
                                     {{$blog->description}}
                                 </div>
                             </div>
-                        @endforeach
-                    @endif
-                </div>
+                        </div>
+                    @endforeach
+                @endif
            </div>
         </div>
         <div class="rightCol w-1/4 text-right">
