@@ -28,4 +28,17 @@ $(document).ready(function() {
             }, 500);
         }, 3000); // Progress bar duration
     }
+    // Function to handle the Filter Form
+    $(document).ready(function() {
+        const currentUrl = window.location.href.split('?')[0];
+        $('#authorFilterForm').submit(function(e) {
+            const authorInput = $(this).find('input[name="author"]').val().trim();
+            if (authorInput == '') {
+                // If the input is empty, set the action to the base URL without query parameters
+                window.location.href = currentUrl; // set the base URL
+                e.preventDefault();
+            }
+            return true; // Allow the form to be submitted
+        });
+    });
 });
