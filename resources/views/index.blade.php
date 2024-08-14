@@ -5,14 +5,14 @@
     <div class="IndexTop">
         {{-- Will Add Something --}}
     </div>
-    <div class="indexContent flex">
-        <div class="leftCol w-3/4 pt-4">
+    <div class="indexContent flex flex-col md:flex-row">
+        <div class="leftCol md:w-3/4 pt-4 m-2">
             <div class="authorFilter p-4 bg-gray-800">
                 <form action="{{ route('home') }}" method="GET" id="authorFilterForm">
                     <input type="text" name="author" placeholder="Enter an author's name" 
-                           class="bg-transparent text-white border-2 w-[350px]"
+                           class="bg-transparent text-white border-2 w-full sm:w-[350px]"
                            value="{{ request()->get('author') }}">
-                    <button type="submit" class="border-2 border-white bg-transparent hover:bg-indigo-950 px-4 py-2 rounded font-bold">Filter</button>
+                    <button type="submit" class="border-2 border-white bg-transparent hover:bg-indigo-950 px-4 py-2 rounded font-bold mt-2 md:mt-0">Filter</button>
                 </form>
             </div>
            <div class="blogsContainer">
@@ -40,7 +40,7 @@
                 
            </div>
         </div>
-        <div class="rightCol w-1/4 text-right">
+        <div class="rightCol md:w-1/4 text-right m-2">
             
         </div>
     </div>

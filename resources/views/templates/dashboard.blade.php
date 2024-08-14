@@ -16,7 +16,7 @@
 @endphp
 <div class="DashboardMain w-full">
     <div class="ContainerTitle flex mx-auto mx-8 h-full">
-        <div class="leftSidebar md:min-w-60 px-4 border-r">
+        <div class="leftSidebar px-4 border-r">
             <div class="ActionGroup mt-4">
                 <div class="Actions flex flex-col">
                     <a href="{{route('dashboard')}}" class="">
@@ -30,12 +30,12 @@
                 </div>
             </div>
         </div>
-        <div class="RightMain px-4 flex-grow mt-4 mb-8">
-            <div class="userWelCome my-2">
+        <div class="RightMain px-4 pt-4 pb-8">
+            <div class="userWelCome py-2">
                 Hello👋 <strong>{{$userName}}</strong>
                 <hr>
             </div>
-            <div class="Content">
+            <div class="DashboardContent">
                 @yield('dashboard-content')
             </div> 
         </div>

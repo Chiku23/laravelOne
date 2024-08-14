@@ -1,7 +1,7 @@
 @extends('templates/dashboard')
 
 @section('dashboard-content')
-<div class="accountSettingMain w-1/2">
+<div class="AddBlogMain sm:w-1/2">
     <h2 class="text-xl font-bold mb-4">Add a Blog</h2>
     <p class="my-2">Publish a new blog by filling out this form:</p>
     <!-- Form to update account Details-->

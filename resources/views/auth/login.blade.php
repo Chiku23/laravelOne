@@ -3,9 +3,9 @@
 @section('content')
 <div class="LoginMain md:w-1/4 w-full mx-auto">
     <div class="FormTitle flex mx-auto justify-center font-bold">
-        <h1 class="mb-2 text-2xl">Login</h1>
+        <h1 class="mb-2 text-2xl pt-2">Login</h1>
     </div>
-    <form action="{{ url('loginUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 bg-gray-800 mb-4">
+    <form action="{{ url('loginUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 bg-gray-800 mb-4 max-w-[350px]">
         {{-- Unique Form Token --}}
         @csrf
         <label for="email" class="mt-4 mb-2">Enter Email</label>

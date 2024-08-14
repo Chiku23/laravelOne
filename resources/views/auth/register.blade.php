@@ -3,9 +3,9 @@
 @section('content')
 <div class="RegistrationMain md:w-1/3 w-full mx-auto">
     <div class="FormTitle flex mx-auto justify-center font-bold">
-        <h1 class="mb-2 text-2xl">Registration Form</h1>
+        <h1 class="mb-2 text-2xl pt-2">Registration Form</h1>
     </div>
-    <form action="{{ url('registerUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 bg-gray-800 mb-4">
+    <form action="{{ url('registerUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 bg-gray-800 mb-4 max-w-[350px]">
         @csrf
         
         <label for="name" class="mb-2 mt-4 flex items-center">
