@@ -41,4 +41,24 @@ $(document).ready(function() {
             return true; // Allow the form to be submitted
         });
     });
+
+    // Custom Js code to handle the animation/styling of form input-labels
+    // top: -30%;
+    // background: gray;
+    // padding-right: 0.5rem;
+    // margin-left: 0.5rem;
+
+    $('.CustomForm input').on('input focus', function(e){
+        var InputParent = $(this).parent();
+        if(InputParent.children('label')){
+            InputParent.children('label').removeClass("top-1/4").addClass("top-[-30%] bg-gray-800 pr-2")
+        }
+    }).on('blur', function() {
+        var InputParent = $(this).parent();
+        if(InputParent.children('label')){
+            if ($(this).val().trim() === '') {
+                InputParent.children('label').removeClass("top-[-30%] bg-gray-800 pr-2").addClass("top-1/4");
+            };
+        }
+    });
 });

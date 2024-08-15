@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+     /* Override styles for autofill */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active,
+    input:-internal-autofill-selected {
+        -webkit-box-shadow: 0 0 0 30px transparent inset !important; /* Make background transparent */
+        box-shadow: 0 0 0 30px transparent inset !important; /* Make background transparent */
+        background-color: transparent !important; /* Make background transparent */
+        color: inherit !important; /* Use the inherited text color */
+    }
+}

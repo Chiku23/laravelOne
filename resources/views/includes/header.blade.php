@@ -5,30 +5,30 @@
         </div>
         <div class="leftCol navbar xl:w-5/6 items-center p-2 justify-center hidden md:flex">
             <a href="{{ route('home') }}">
-                <div class="navItem p-2 px-4 {{ Request::routeIs('home') ? 'border-b' : '' }}">Home</div>
+                <div class="navItem p-2 px-4 {{ Request::routeIs('home') ? 'border-b' : '' }}"><i class="fa-solid fa-house"></i> Home</div>
             </a>
             <a href="{{ route('about') }}">
-                <div class="navItem p-2 px-4 {{ Request::routeIs('about') ? 'border-b' : '' }}">About</div>
+                <div class="navItem p-2 px-4 {{ Request::routeIs('about') ? 'border-b' : '' }}"><i class="fa-solid fa-address-card"></i> About</div>
             </a>
             <a href="{{ route('contact') }}">
-                <div class="navItem p-2 px-4 {{ Request::routeIs('contact') ? 'border-b' : '' }}">Contact</div>
+                <div class="navItem p-2 px-4 {{ Request::routeIs('contact') ? 'border-b' : '' }}"><i class="fa-solid fa-address-book"></i> Contact</div>
             </a>
 
             @if (Auth::check())
                 <!-- Show these items if the user is logged in -->
                 <a href="{{ route('dashboard') }}">
-                    <div class="navItem p-2 px-4 {{ Request::is('dashboard*') ? 'border-b' : '' }}">Dashboard</div>
+                    <div class="navItem p-2 px-4 {{ Request::is('dashboard*') ? 'border-b' : '' }}"><i class="fa-solid fa-clapperboard"></i> Dashboard</div>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <div class="navItem p-2 px-4">Logout</div>
+                    <div class="navItem p-2 px-4"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
                 </a>
             @else
                 <!-- Show these items if the user is logged out -->
                 <a href="{{ route('register') }}">
-                    <div class="navItem p-2 px-4 {{ Request::routeIs('register') ? 'border-b' : '' }}">Register</div>
+                    <div class="navItem p-2 px-4 {{ Request::routeIs('register') ? 'border-b' : '' }}"><i class="fa-solid fa-user-plus"></i> Register</div>
                 </a>
                 <a href="{{ route('login') }}">
-                    <div class="navItem p-2 px-4 {{ Request::routeIs('login') ? 'border-b' : '' }}">Login</div>
+                    <div class="navItem p-2 px-4 {{ Request::routeIs('login') ? 'border-b' : '' }}"><i class="fa-solid fa-right-to-bracket"></i> Login</div>
                 </a>
             @endif
         </div>
