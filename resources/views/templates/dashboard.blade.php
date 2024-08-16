@@ -15,22 +15,22 @@
     $userNumber = $arrUser['number'];
 @endphp
 <div class="DashboardMain w-full">
-    <div class="ContainerTitle flex mx-auto mx-8 h-full">
-        <div class="leftSidebar px-4 border-r">
+    <div class="ContainerTitle flex flex-col sm:flex-row mx-auto mx-8 h-full">
+        <div class="leftSidebar px-4 border-r sm:w-1/4">
             <div class="ActionGroup mt-4">
-                <div class="Actions flex flex-col">
+                <div class="Actions flex flex-col font-bold">
                     <a href="{{route('dashboard')}}" class="">
-                        <div class="{{Request::routeIs('dashboard')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">My Blogs</div>
+                        <div class="{{Request::routeIs('dashboard')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4"><i class="fa-solid fa-blog"></i> My Blogs</div>
                     </a>
                     <a href="{{route('addblog')}}" class="">
-                        <div class="{{Request::routeIs('addblog')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Add a Blog</div>
+                        <div class="{{Request::routeIs('addblog')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4"><i class="fa-solid fa-file-circle-plus"></i> Add a Blog</div>
                     </a>
-                    <a href="{{route('accountsetting')}}" class=""><div class="{{Request::routeIs('accountsetting')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Account Settings</div></a>
-                    <a href="{{route('updatepassword')}}" class=""><div class="{{Request::routeIs('updatepassword')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4">Update Password</div></a>
+                    <a href="{{route('accountsetting')}}" class=""><div class="{{Request::routeIs('accountsetting')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4"><i class="fa-solid fa-screwdriver-wrench"></i> Account Settings</div></a>
+                    <a href="{{route('updatepassword')}}" class=""><div class="{{Request::routeIs('updatepassword')?"bg-indigo-800": "border-transparent"}} actionItem px-4 py-2 border-l-4"><i class="fa-solid fa-key"></i> Update Password</div></a>
                 </div>
             </div>
         </div>
-        <div class="RightMain px-4 pt-4 pb-8">
+        <div class="RightMain px-4 pt-4 pb-8 sm:w-3/4">
             <div class="userWelCome py-2">
                 Hello👋 <strong>{{$userName}}</strong>
                 <hr>

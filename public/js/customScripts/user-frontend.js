@@ -43,11 +43,6 @@ $(document).ready(function() {
     });
 
     // Custom Js code to handle the animation/styling of form input-labels
-    // top: -30%;
-    // background: gray;
-    // padding-right: 0.5rem;
-    // margin-left: 0.5rem;
-
     $('.CustomForm input').on('input focus', function(e){
         var InputParent = $(this).parent();
         if(InputParent.children('label')){
@@ -61,4 +56,19 @@ $(document).ready(function() {
             };
         }
     });
+
+    // Mobile Navigation Show Hide - Hamburger Menu
+    // Toggle mobile menu
+    $('.mobileMenu.menuClose').on('click', function() {
+        $('.MobileNav').removeClass('max-h-0 opacity-0').addClass('max-h-screen opacity-100');
+        $('.mobileMenu.menuClose').addClass('hidden');
+        $('.mobileMenu.menuOpen').removeClass('hidden');
+    });
+
+    $('.mobileMenu.menuOpen').on('click', function() {
+        $('.MobileNav').removeClass('max-h-screen opacity-100').addClass('max-h-0 opacity-0');
+        $('.mobileMenu.menuClose').removeClass('hidden');
+        $('.mobileMenu.menuOpen').addClass('hidden');
+    });
+
 });

@@ -2,7 +2,7 @@
 
 @section('dashboard-content')
 <div class="AddBlogMain sm:w-1/2">
-    <h2 class="text-xl font-bold mb-4">Add a Blog</h2>
+    <h2 class=" font-bold mb-4 text-2xl border-b border-slate-400 pb-2">Add a Blog</h2>
     <p class="my-2">Publish a new blog by filling out this form:</p>
     <!-- Form to update account Details-->
     <form action="{{ route('publishBlog') }}" method="post" class="mt-2">

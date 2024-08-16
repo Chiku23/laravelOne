@@ -14,8 +14,8 @@
     $userEmail = $arrUser['email'];
     $userNumber = $arrUser['number'];
 @endphp
-<div class="accountSettingMain w-1/2">
-    <h2 class="text-xl font-bold mb-4">Update Password</h2>
+<div class="accountSettingMain sm:w-1/2">
+    <h2 class=" font-bold mb-4 text-2xl border-b border-slate-400 pb-2">Update Password</h2>
     <p class="my-2">Update your password below,</p>
     <!-- Form to update account Details-->
     <form action="{{ route('updateUserPassword') }}" method="post" class="mt-2">

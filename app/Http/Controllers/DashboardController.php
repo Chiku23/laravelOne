@@ -133,7 +133,7 @@ class DashboardController extends Controller
         if ($user) {
             $userId = Auth::user()->user_id;
             // Retrieve blogs related to the user
-            $blogs = Blog::where('created_by', $userId)->get();
+            $blogs = Blog::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
 
             return view('templates.dashboard-parts.user-blogs', compact('blogs','user'));
         } else {
