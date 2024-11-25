@@ -15,6 +15,6 @@
                 </div>
             @endif
         </div>
-        <div id="progressBar" class="absolute bottom-0 left-0 h-1 duration-[5s] transition-[width] w-full bg-white ease-linear"></div>
+        <div id="progressBar" class="absolute bottom-0 left-0 h-1 duration-[3s] transition-[width] w-full bg-white ease-linear"></div>
     @endif
 </div>

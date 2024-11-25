@@ -11,13 +11,13 @@
         <div class="emailContainer relative flex items-center my-2">
             <label for="email" class="absolute pl-2 ml-2 text-sm text-slate-400 font-bold top-1/4 transition-all duration-500">Enter Email</label>
             <input class="rounded bg-transparent active:outline:none w-full focus:bg-transparent focus:outline-none" type="email" name="email" id="email" value="{{old('email')}}">
-            <span class="text-red">@error('email') {{$message}} @enderror</span>
         </div>
+        {{-- <span class="text-red-500">@error('email') {{$message}} @enderror</span> Already ToolTips Added --}}
         <div class="passwordContainer relative flex items-center my-2">
             <label for="password" class="absolute pl-2 ml-2 text-sm text-slate-400 font-bold top-1/4 transition-all duration-500">Enter Password</label>
             <input class="rounded bg-transparent active:outline:none w-full" type="password" name="password" id="password">
-            <span class="text-red">@error('password') {{$message}} @enderror</span>
         </div>
+        {{-- <span class="text-red-500">@error('password') {{$message}} @enderror</span> Already ToolTips Added --}}
 
         <div class="Actions mt-3 flex justify-center">
             <button type="submit" class="bg-green-500 px-5 py-2 rounded">Login</button>

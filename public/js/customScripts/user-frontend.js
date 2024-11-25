@@ -1,9 +1,10 @@
 $(document).ready(function() {
+
+    // Error Pop Up function
     const $errorPopup = $('#errorPopupContainer');
     const $progressBar = $('#progressBar');
-
-    if ($errorPopup.html().trim().length > 0) {
-        console.log('Yes');
+    
+    if ($errorPopup.length !== 0 && $errorPopup.html().trim().length > 0) {
        $errorPopup.removeClass("translate-x-[150%]");
        $errorPopup.addClass("translate-x-0");
        startProgressBar();
@@ -11,7 +12,6 @@ $(document).ready(function() {
     $(".error-popup-close").on('click',function(){
         $errorPopup.removeClass("translate-x-0");
         $errorPopup.addClass("translate-x-[150%]");
-
         // Wait for 500ms and then remove the content inside $errorPopup
         setTimeout(function() {
             $errorPopup.empty(); // Removes the content inside the popup
@@ -28,6 +28,7 @@ $(document).ready(function() {
             }, 500);
         }, 3000); // Progress bar duration
     }
+
     // Function to handle the Filter Form
     $(document).ready(function() {
         const currentUrl = window.location.href.split('?')[0];

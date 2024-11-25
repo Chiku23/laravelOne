@@ -69,4 +69,7 @@
         </div>
     </div>
 </header>
-<x-error-popup :errors="$errors" :successMessage="session('status')"/>
+{{-- Do not show the Error Pop Up in the Register Page. --}}
+@if (!Request::routeIs('register'))
+    <x-error-popup :errors="$errors" :successMessage="session('status')"/>
+@endif
