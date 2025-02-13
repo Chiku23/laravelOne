@@ -140,7 +140,22 @@ class DashboardController extends Controller
             // If no user is logged in, redirect to the login page or show an error
             return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);
         }
+    }
+    // Delete a specific blog
+    public function deleteBlog($id){
+        $blog = Blog::find($id);
 
+        if (!$blog) {
+            return redirect()->back()->withErrors('ErrorMSG', 'Something Went Wrong!');
+        }
+
+        // Ensure only the blog owner can delete it
+        if ($blog->created_by !== Auth::user()->user_id) {
+            return redirect()->back()->withErrors('ErrorMSG', 'Unauthorized action!');
+        }
+
+        $blog->delete();
         
+        return redirect()->back()->with('status', 'Blog deleted successfully!');
     }
 }

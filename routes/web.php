@@ -45,7 +45,8 @@ Route::prefix('dashboard')->group(function(){
 
     Route::get('/update-password', [DashboardController::class,'updatePassword'])->name('updatepassword');
     Route::post('/update-password/updateUserPassword', [DashboardController::class,'updateUserPassword'])->name('updateUserPassword');
-    
+
+    Route::delete('/delete-blog/{id}', [DashboardController::class, 'deleteBlog'])->name('blog.delete');
 });
 
 /*------------------------
