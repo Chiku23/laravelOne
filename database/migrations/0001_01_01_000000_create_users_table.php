@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name'); // Required for both manual and Google users
+            $table->string('email')->unique(); // Required for manual signup, but also used in Google login
+            $table->string('password')->nullable(); // Nullable for Google login users
+            $table->string('google_id')->unique()->nullable(); // Store Google OAuth ID
+            $table->string('avatar')->nullable(); // Google profile picture
+            $table->string('avatar_original')->nullable(); // Original size Google profile picture
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('number',10);
+            $table->string('number', 15)->nullable(); // Allow optional phone numbers
             $table->text('address')->nullable();
             $table->rememberToken();
             $table->timestamps();

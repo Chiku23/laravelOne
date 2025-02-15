@@ -9,7 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\Auth\GoogleController;
 // User Admin Controllers
 use App\Http\Controllers\Admin\AdminController;
 
@@ -21,6 +21,11 @@ use App\Http\Controllers\Admin\AdminController;
 
 // Homepage Route
 Route::get('/', [HomeController::class,'index'])->name('home');
+
+// Google Logic Routes
+
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 // Login Form Routes and Authentication
 Route::get('/login', [LoginController::class, 'index'])->name('login');

@@ -25,6 +25,9 @@
         <div class="registerUser text-center mt-2">
             Don't have a account Register? <a href="{{route('register')}}"><u class="text-blue-500">Here</u></a>
         </div>
+        <a href="{{ url('/auth/google') }}" class="border-2 border-white mt-2 p-2 flex items-center justify-center">
+            <i class="fa-brands fa-google pr-2"></i> Login with Google
+        </a>        
     </form>
 </div>
 @endsection
