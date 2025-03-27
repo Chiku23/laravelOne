@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-<div class="LoginMain md:w-1/4 w-full mx-auto">
+<div class="LoginMain md:w-1/4 w-full mx-auto mt-4">
     <form action="{{ url('loginUser') }}" method="post" class="CustomForm flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 bg-gray-800 mb-4 max-w-[350px]">
         {{-- Unique Form Token --}}
         @csrf

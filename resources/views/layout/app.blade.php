@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{asset('css/tailwind.css')}}">
     <title>{{config('app.name')}}</title>
 </head>
-<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+<body class="bg-foreground text-white flex flex-col min-h-screen">
     {{-- Include Header --}}
     @include('includes.header')
 

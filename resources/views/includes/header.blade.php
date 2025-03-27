@@ -1,4 +1,4 @@
-<header class="bg-indigo-950 border-b">
+<header class="bg-background border-b">
     <div class="flex md:flex-row flex-col uppercase w-full sm:justify-between max-w-1200 mx-auto sm:min-h-32 font-bold">
         <div class="rightCol flex xl:w-1/6 font-mono capitalize text-3xl p-2 text-center items-center">
             <div class="w-full">Thought Threads</div>
