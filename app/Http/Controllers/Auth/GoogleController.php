@@ -34,6 +34,7 @@ class GoogleController extends Controller
                         'name' => $googleUser->name,
                         'email' => $googleUser->email,
                         'google_id' => $googleUser->id,
+                        'avatar' => $googleUser->avatar,
                         'password' => bcrypt('random-password') // Not used, just a placeholder
                     ]);
                     Log::info('New user created via Google login', ['email' => $googleUser->email]);
@@ -53,6 +54,13 @@ class GoogleController extends Controller
             // Log the user in
             Auth::login($user);
 
+           // Put the logged in user details in session
+            session()->put('user', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
+                'number' => $user->number
+            ]);
             // Redirect to intended URL
             return redirect()->intended('dashboard')->with('status', 'Welcome...!');
 

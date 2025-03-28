@@ -45,8 +45,13 @@ class LoginController extends Controller
 
         // Log in the user
         Auth::login($user);
-        // Set a flash message
-        
+        // Put the logged in user details in session
+        session()->put('user', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'number' => $user->number
+        ]);
 
         // Redirect to intended URL
         return redirect()->intended('dashboard')->with('status', 'Logged In successfully!');
@@ -56,6 +61,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->forget('user'); //forget the user data
         $request->session()->flash('status', 'Logged Out Successfully !');
         return redirect('/'); // Redirect to homepage or another appropriate route
     }
