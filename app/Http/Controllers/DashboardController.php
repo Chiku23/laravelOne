@@ -114,13 +114,23 @@ class DashboardController extends Controller
         // Validate the form data
         $validatedData = $request->validate([
             'title' => 'required|max:255',
-            'description' => 'required',
+            'content' => 'required',
         ]);
-
+        // get the blog id in case of edit blog
+        $blogID = $request->editblogid ?? null;
+        if($blogID){
+               // Update existing blog
+            $blog = Blog::findOrFail($blogID);
+            $blog->title = $validatedData['title'];
+            $blog->description = $validatedData['content'];
+            $blog->save();
+            return redirect()->back()->with('status', 'Blog updated successfully!');
+        }
+        
         // Create a new blog post
         $blog = new Blog();
         $blog->title = $validatedData['title'];
-        $blog->description = $validatedData['description'];
+        $blog->description = $validatedData['content'];
         $blog->created_by = Auth::user()->user_id;
         $blog->save();
 
@@ -159,5 +169,20 @@ class DashboardController extends Controller
         $blog->delete();
         
         return redirect()->back()->with('status', 'Blog deleted successfully!');
+    }
+    // Delete a specific blog
+    public function editBlog(Request $request){
+        $user = Auth::user();
+        $blog = Blog::find($request->editblogid);
+
+        if (!$blog) {
+            return redirect()->back()->withErrors('ErrorMSG', 'Something Went Wrong!');
+        }
+
+        // Ensure only the blog owner can delete it
+        if ($blog->created_by !== Auth::user()->user_id) {
+            return redirect()->back()->withErrors('ErrorMSG', 'Unauthorized action!');
+        }
+        return view('templates/dashboard-parts/addblog', compact('user', 'blog'));
     }
 }

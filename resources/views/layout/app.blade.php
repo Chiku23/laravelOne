@@ -8,6 +8,8 @@
     {{-- @vite('resources/css/app.css') --}}
     <link rel="stylesheet" href="{{asset('css/tailwind.css')}}">
     <title>{{config('app.name')}}</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    @stack('styles')
 </head>
 <body class="bg-foreground text-white flex flex-col min-h-screen">
     {{-- Include Header --}}
@@ -24,5 +26,8 @@
     <script src="{{asset('js/jquery-migrate.min.js')}}"></script>
     {{-- Include Custom Js Scripts --}}
     <script src="{{asset('js/customScripts/user-frontend.js')}}"></script>
+
+    <script src="{{ asset('build/assets/app2.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

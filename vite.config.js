@@ -11,4 +11,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                entryFileNames: 'assets/app.js',
+                assetFileNames: 'assets/[name].[ext]'
+            }
+        }
+    }
 });

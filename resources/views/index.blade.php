@@ -32,7 +32,7 @@
                                     {{$blog->title}}
                                 </div>
                                 <div class="BlogDescription font-mono text-slate-300">
-                                    {{$blog->description}}
+                                    {!! $blog->description !!}
                                 </div>
                             </div>
                         </div>
