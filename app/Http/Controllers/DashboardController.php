@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Blog;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -115,7 +116,20 @@ class DashboardController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
+            'thumbnailImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('thumbnailImage')) {
+            // Delete old thumbnail if updating
+            if ($request->editblogid && $blog = Blog::find($request->editblogid)) {
+                Storage::delete('public/' . $blog->thumbnail);
+            }
+            // Store new thumbnail
+            $path = $request->file('thumbnailImage')->store('blog-thumbnails', 'public');
+            $validatedData['thumbnail'] = $path;
+        }
+
         // get the blog id in case of edit blog
         $blogID = $request->editblogid ?? null;
         if($blogID){
@@ -123,6 +137,7 @@ class DashboardController extends Controller
             $blog = Blog::findOrFail($blogID);
             $blog->title = $validatedData['title'];
             $blog->description = $validatedData['content'];
+            $blog->thumbnail = $validatedData['thumbnail'];
             $blog->save();
             return redirect()->back()->with('status', 'Blog updated successfully!');
         }
@@ -131,6 +146,7 @@ class DashboardController extends Controller
         $blog = new Blog();
         $blog->title = $validatedData['title'];
         $blog->description = $validatedData['content'];
+        $blog->thumbnail = $validatedData['thumbnail'];
         $blog->created_by = Auth::user()->user_id;
         $blog->save();
 

@@ -12,14 +12,17 @@
                     <input type="text" name="author" placeholder="Enter an author's name" 
                            class="bg-transparent text-white border-2 w-full sm:w-[350px]"
                            value="{{ request()->get('author') }}">
-                    <button type="submit" class="border-2 border-white bg-transparent hover:bg-indigo-950 px-4 py-2 rounded font-bold mt-2 md:mt-0">Filter</button>
+                    <button type="submit" class=" w-full sm:w-[150px] border-2 border-white bg-transparent hover:bg-indigo-950 px-4 py-2 rounded font-bold mt-2 md:mt-0">Filter</button>
                 </form>
             </div>
            <div class="blogsContainer">
                @if(!empty($blogs->isNotEmpty()))
                     @foreach($blogs as $blog)
-                        <div class="blogs flex my-4 p-4 bg-gray-800 rounded shadow-lg">
-                            <div class="contentBox">
+                        <div class="blogs flex flex-col sm:flex-row my-4 p-4 bg-gray-800 rounded shadow-lg gap-2">
+                            <div class="imageBox w-full sm:w-[25%] h-[200px] border-2">
+                                <img src="{{($blog->thumbnail) ? asset('/storage/'.$blog->thumbnail) : asset('/images/thumbnail-placeholder.jpg')}}" alt="thumbnail-image" class="object-cover h-full w-full">
+                            </div>
+                            <div class="contentBox w-full sm:w-[75%] sm:pt-2">
                                 <div class="BlogAuthor font-mono text-slate-400 mb-2 hidden sm:block">
                                     <i class="fa-brands fa-creative-commons-by"></i> Author: {{ $blog->user->name }} | <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y');}}
                                 </div>

@@ -5,6 +5,9 @@
 <div class="BlogsPageTitle font-bold mb-4 text-2xl border-b border-slate-400 pb-2">Pubished Blogs</div>
     @foreach($blogs as $blog)
         <div class="blogs flex flex-wrap sm:flex-nowrap my-4 p-4 bg-gray-800 rounded shadow-lg relative border border-white">
+            <div class="imageBox w-[200px] h-[150px] border-2 m-2">
+                <img src="{{($blog->thumbnail) ? asset('/storage/'.$blog->thumbnail) : asset('/images/thumbnail-placeholder.jpg')}}" alt="thumbnail-image" class="object-cover h-full w-full">
+            </div>
             <div class="contentBox w-full" id="blog{{$blog->id;}}">
                 <div class="BlogPublishTime font-mono text-slate-400 mb-2">
                    Publish Time: {{$blog->created_at->format('j/F/Y');}}
