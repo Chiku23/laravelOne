@@ -12,14 +12,14 @@
             <span class="mr-1">Enter Your Name</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="text" name="name" id="name" value="{{ old('name') }}" required>
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="text" name="name" id="name" value="{{ old('name') }}" required autocomplete="true">
         <span class="text-red-500">@error('name') {{ $message }} @enderror</span>
 
         <label for="email" class="mb-2 mt-4 flex items-center">
             <span class="mr-1">Enter Your Email</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="email" name="email" id="email" value="{{ old('email') }}" required>
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="true">
         <span class="text-red-500">@error('email') {{ $message }} @enderror</span>
 
         <label for="number" class="mb-2 mt-4 flex items-center">
@@ -33,14 +33,14 @@
             <span class="mr-1">Enter Password</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password" id="password" required>
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password" id="password" required autocomplete="false">
         <span class="text-red-500">@error('password') {{ $message }} @enderror</span>
 
         <label for="password_confirmation" class="mb-2 mt-4 flex items-center">
             <span class="mr-1">Confirm Password</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password_confirmation" id="password_confirmation" required>
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password_confirmation" id="password_confirmation" required autocomplete="false">
         <span class="text-red-500">@error('password_confirmation') {{ $message }} @enderror</span>
 
         <div class="Actions mt-3 flex justify-center">

@@ -9,10 +9,10 @@
         @csrf
         <div class="formContent flex flex-col">
             <label for="title" class="font-bold my-2">Blog Title:</label>
-            <input type="text" name="title" value="{{ old('title') }}" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
+            <input type="text" id="title" name="title" value="{{ old('title') }}" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
 
             <label for="description" class="font-bold my-2">Description:</label>
-            <textarea name="description" rows="5" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">{{ old('description') }}</textarea>
+            <textarea name="description" id="description" rows="5" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">{{ old('description') }}</textarea>
 
             <div class="Actions mt-3 flex">
                 <button type="submit" class="bg-green-500 px-5 py-2 rounded font-bold">Publish</button>

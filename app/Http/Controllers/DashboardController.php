@@ -49,7 +49,9 @@ class DashboardController extends Controller
         if($user){
             // Update user details
             $user->name = $request->input('name');
-            $user->email = $request->input('email');
+            if(!$user->google_id){ // Dont let the google account users update their email
+                $user->email = $request->input('email');
+            }
             $user->number = $request->input('number');
             $user->save();
     
