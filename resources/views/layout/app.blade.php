@@ -13,14 +13,22 @@
 </head>
 <body class="bg-foreground text-white flex flex-col min-h-screen">
     {{-- Include Header --}}
-    @include('includes.header')
+    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+        @include('includes.header')
+    @endif
 
-    <div class="flex flex-grow max-w-1200 mx-auto w-full">
+    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+        <div class="flex flex-grow max-w-1200 mx-auto w-full">
+    @else
+        <div class="flex flex-col max-w-1200 mx-auto w-full h-dvh">
+    @endif
         @yield('content')
     </div>
 
     {{-- Include Footer --}}
-    @include('includes.footer')
+    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+        @include('includes.footer')
+    @endif
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery-migrate.min.js')}}"></script>

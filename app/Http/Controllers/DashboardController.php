@@ -55,7 +55,15 @@ class DashboardController extends Controller
             }
             $user->number = $request->input('number');
             $user->save();
-    
+
+            // Put the logged in user details in session
+            session()->put('user', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
+                'number' => $user->number
+            ]);
+
             // Redirect back with success message
             $request->session()->flash('status', 'User information updated successfully.');
             return redirect()->back();
@@ -127,17 +135,22 @@ class DashboardController extends Controller
             }
             // Store new thumbnail
             $path = $request->file('thumbnailImage')->store('blog-thumbnails', 'public');
-            $validatedData['thumbnail'] = $path;
+            $validatedData['thumbnailImage'] = $path;
         }
 
         // get the blog id in case of edit blog
         $blogID = $request->editblogid ?? null;
         if($blogID){
-               // Update existing blog
+            // Update existing blog
             $blog = Blog::findOrFail($blogID);
+            // When editing blog if the input field for thumbnail is empty then assign the existing thumbnail and update the blog
+            if(!isset($validatedData['thumbnailImage'])){
+                $validatedData['thumbnailImage'] = $blog['thumbnail'];
+            }
+
             $blog->title = $validatedData['title'];
             $blog->description = $validatedData['content'];
-            $blog->thumbnail = $validatedData['thumbnail'];
+            $blog->thumbnail = $validatedData['thumbnailImage'];
             $blog->save();
             return redirect()->back()->with('status', 'Blog updated successfully!');
         }
@@ -146,7 +159,7 @@ class DashboardController extends Controller
         $blog = new Blog();
         $blog->title = $validatedData['title'];
         $blog->description = $validatedData['content'];
-        $blog->thumbnail = $validatedData['thumbnail'];
+        $blog->thumbnail = $validatedData['thumbnailImage'];
         $blog->created_by = Auth::user()->user_id;
         $blog->save();
 

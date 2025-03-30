@@ -34,6 +34,12 @@ class LoginController extends Controller
                 'ErrorMSG' => 'User not found.',
             ]);
         }
+        if ($user->google_id) {
+            // Google User trying to login with password
+            return back()->withErrors([
+                'ErrorMSG' => 'You are a Google Authenticated user please login with Google.',
+            ]);
+        }
 
         // Check if the password is correct
         if (!Hash::check($request->password, $user->password)) {
