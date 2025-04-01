@@ -36,6 +36,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class,'index'])->name('register');
 Route::post('/registerUser', [RegisterController::class, 'register']);
 
+// OTP Verification Rotes
+Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('verify.otp');
+Route::get('/resend-otp', [RegisterController::class, 'resendOtp'])->name('resend.otp');
+
+
 Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 

@@ -7,7 +7,7 @@
 
 <div class="RegistrationMain md:w-1/3 w-full mx-auto">
 
-    <form action="{{ url('registerUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 mb-4 max-w-[350px] bg-white text-black">
+    <form action="{{ url('registerUser') }}" method="post" class="flex flex-col mx-auto shadow-lg shadow-slate-500/20 mt-4 rounded p-4 mb-4 max-w-[350px] bg-white text-black" id="registerForm">
         @csrf
         <div class="FormTitle flex mx-auto justify-center font-bold">
             <h1 class="mb-2 text-2xl pt-2">Registration Form</h1>
@@ -16,36 +16,36 @@
             <span class="mr-1">Enter Your Name</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="text" name="name" id="name" value="{{ old('name') }}" required autocomplete="true">
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="text" name="name" id="name" value="{{ old('name') }}" required autocomplete="first_name">
         <span class="text-red-500">@error('name') {{ $message }} @enderror</span>
 
         <label for="email" class="mb-2 mt-2 flex items-center">
             <span class="mr-1">Enter Your Email</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
-        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="true">
-        <span class="text-red-500">@error('email') {{ $message }} @enderror</span>
+        <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="email">
+        <span class="errorbox text-red-500">@error('email') {{ $message }} @enderror</span>
 
         <label for="number" class="mb-2 mt-2 flex items-center">
             <span class="mr-1">Enter Phone</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
         <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="text" name="number" id="number" value="{{ old('number') }}" required>
-        <span class="text-red-500">@error('number') {{ $message }} @enderror</span>
+        <span class="errorbox text-red-500">@error('number') {{ $message }} @enderror</span>
 
         <label for="password" class="mb-2 mt-2 flex items-center">
             <span class="mr-1">Enter Password</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
         <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password" id="password" required autocomplete="false">
-        <span class="text-red-500">@error('password') {{ $message }} @enderror</span>
+        <span class="errorbox text-red-500">@error('password') {{ $message }} @enderror</span>
 
         <label for="password_confirmation" class="mb-2 mt-2 flex items-center">
             <span class="mr-1">Confirm Password</span>
             <span class="text-red-500">*</span> <!-- Asterisk for required -->
         </label>
         <input class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300" type="password" name="password_confirmation" id="password_confirmation" required autocomplete="false">
-        <span class="text-red-500">@error('password_confirmation') {{ $message }} @enderror</span>
+        <span class="errorbox text-red-500">@error('password_confirmation') {{ $message }} @enderror</span>
 
         <div class="Actions mt-3 flex justify-center">
             <button type="submit" class="bg-green-500 px-5 py-2 rounded border-2 border-green-500 hover:border-green-900 hover:bg-green-600 font-bold text-black hover:text-white">Register</button>
@@ -64,4 +64,121 @@
         </a>        
     </form>
 </div>
+
+@include('components.otp-modal')
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all elements
+    const registerForm = document.getElementById('registerForm');
+    const otpModal = document.getElementById('otpModal');
+    const otpForm = document.getElementById('otpForm');
+    const otpError = document.getElementById('otpError');
+    const displayOtp = document.getElementById('displayOtp');
+    const resendOtpBtn = document.getElementById('resendOtp');
+    const closeOtpModal = document.getElementById('closeOtpModal');
+    const csrfToken = document.querySelector('input[name="_token"]').value;
+    const errorboxes = document.querySelectorAll('.errorbox');
+
+
+    // Register form submission
+    registerForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: new FormData(this)
+            });
+            
+            const data = await response.json();
+            console.log(data.errors);
+            if (!response.ok) {
+            // Handle validation errors
+            if (data.errors) {
+                // Reset the Error box each time the form is submitted
+                errorboxes.forEach(box => {
+                    box.innerHTML = '';  
+                });
+                for (const [field, messages] of Object.entries(data.errors)) {
+                    const input = document.querySelector(`[name="${field}"]`);
+                    if (input) {
+                        // Find the error span right after this input
+                        const errorSpan = input.nextElementSibling;
+                        if (errorSpan && errorSpan.classList.contains('errorbox')) {
+                            errorSpan.textContent = messages[0]; // Display the first error message
+                        }
+                    }
+                }
+            }
+            throw new Error(data.message || 'Registration failed');
+        }
+            // Show OTP modal with the received OTP (for development)
+            otpModal.classList.remove('hidden');
+            displayOtp.textContent = data.otp;
+            document.getElementById('otpMessage').classList.remove('hidden');
+        } catch (error) {
+            console.error('Registration error:', error);
+        }
+    });
+
+    // OTP form submission
+    otpForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        otpError.classList.add('hidden');
+        
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: new FormData(this)
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'OTP verification failed');
+            
+            // Redirect to the intended page 'login' on success
+            window.location.href = data.redirect; 
+            
+        } catch (error) {
+            otpError.textContent = error.message;
+            otpError.classList.remove('hidden');
+        }
+    });
+
+    // Resend OTP
+    resendOtpBtn.addEventListener('click', async function() {
+        try {
+            const response = await fetch('{{ route("resend.otp") }}', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Failed to resend OTP');
+            // Update displayed OTP
+            displayOtp.textContent = data.otp;
+            
+        } catch (error) {
+            otpError.textContent = error.message;
+            otpError.classList.remove('hidden');
+        }
+    });
+
+    // Close modal
+    closeOtpModal.addEventListener('click', function() {
+        otpModal.classList.add('hidden');
+    });
+});
+</script>
 @endsection
