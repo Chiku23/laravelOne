@@ -21,11 +21,8 @@ class GoogleController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
-
             // Check if user already exists
             $user = User::where('email', $googleUser->email)->first();
-
-
 
             try {
                 if (!$user) {
@@ -35,7 +32,8 @@ class GoogleController extends Controller
                         'email' => $googleUser->email,
                         'google_id' => $googleUser->id,
                         'avatar' => $googleUser->avatar,
-                        'password' => bcrypt('random-password') // Not used, just a placeholder
+                        'password' => bcrypt('random-password'), // Not used, just a placeholder
+                        'email_verified_at' => now()
                     ]);
                     Log::info('New user created via Google login', ['email' => $googleUser->email]);
                 }else{

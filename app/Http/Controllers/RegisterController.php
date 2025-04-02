@@ -43,7 +43,7 @@ class RegisterController extends Controller
                 'otp_expires_at' => now()->addMinutes(10)
             ]);
     
-            Log::info("OTP for {$request->number}: $otp");
+            // Log::info("OTP for {$request->number}: $otp");
     
             return response()->json([
                 'success' => true,
