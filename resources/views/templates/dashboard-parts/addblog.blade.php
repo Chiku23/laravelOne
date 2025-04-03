@@ -28,7 +28,7 @@
             <label for="title" class="font-bold my-2">Blog Title:</label>
             <input type="text" id="title" name="title" value="{{ $editblog['title'] ?? '' }}" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
             <div class="divider py-2"></div>
-            <label for="description" class="font-bold my-2">Description:</label>
+            <p class="font-bold my-2">Description:</p>
             <div name="description" id="editor" rows="8" class="!h-48 rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300 text-white"></div>
             <input type="hidden" name="content" id="hidden-content">
             <div class="divider py-2"></div>

@@ -33,9 +33,8 @@
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery-migrate.min.js')}}"></script>
     {{-- Include Custom Js Scripts --}}
-    <script src="{{asset('js/customScripts/user-frontend.js')}}"></script>
-
-    <script src="{{ asset('build/assets/app2.js') }}"></script>
+    @vite('resources/js/app.js')
+    @vite('resources/js/frontendscript.js')
     @stack('scripts')
 </body>
 </html>

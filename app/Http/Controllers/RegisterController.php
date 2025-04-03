@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -100,11 +101,21 @@ class RegisterController extends Controller
         // Clear session
         $request->session()->forget(['registration_data']);
 
+        // Log in the user
+        Auth::login($user);
+        // Put the logged in user details in session
+        session()->put('user', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'number' => $user->number
+        ]);
+
         // Return json for the Script to handles further processing. after successful OTP verification
         return response()->json([
             'success' => true,
             'message' => 'OTP Verification Successful',
-            'redirect' => url('/login')
+            'redirect' => url('/dashboard')
         ]);
     }
 

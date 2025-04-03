@@ -7,16 +7,9 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/frontendscript.js',
             ],
             refresh: true,
         }),
     ],
-    build: {
-        rollupOptions: {
-            output: {
-                entryFileNames: 'assets/app.js',
-                assetFileNames: 'assets/[name].[ext]'
-            }
-        }
-    }
 });
