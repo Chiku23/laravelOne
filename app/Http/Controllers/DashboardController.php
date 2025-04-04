@@ -114,6 +114,9 @@ class DashboardController extends Controller
     // Dashboard Add a Blog page
     public function addBlog(){
         $user = Auth::user();
+        if(!$user){
+            return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);
+        }
         return view('templates/dashboard-parts/addblog', compact('user'));
     }
 

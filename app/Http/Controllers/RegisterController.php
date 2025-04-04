@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -44,8 +45,15 @@ class RegisterController extends Controller
                 'otp_expires_at' => now()->addMinutes(10)
             ]);
     
-            // Log::info("OTP for {$request->number}: $otp");
-    
+            $toEmail = $request->email;
+            $subject = 'LaravelOne - OTP Verification';
+            $content = 'Hey, your registration OTP is '.$otp;
+            
+            Mail::raw($content, function($message) use ($toEmail, $subject) {
+                $message->to($toEmail)
+                        ->subject($subject);
+            });
+
             return response()->json([
                 'success' => true,
                 'message' => 'OTP sent successfully',
@@ -137,7 +145,16 @@ class RegisterController extends Controller
         $registrationData['otp_expires_at'] = now()->addMinutes(10);
         
         $request->session()->put('registration_data', $registrationData);
-    
+
+        $toEmail = $registrationData['email'];
+        $subject = 'LaravelOne - OTP Verification';
+        $content = 'Hey, your registration OTP is '.$newOtp;
+        
+        Mail::raw($content, function($message) use ($toEmail, $subject) {
+            $message->to($toEmail)
+                    ->subject($subject);
+        });
+
         Log::info("New OTP for {$registrationData['number']}: $newOtp");
     
         if ($request->ajax()) {

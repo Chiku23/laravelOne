@@ -1,15 +1,10 @@
 <div id="otpModal" class="fixed inset-0 bg-black text-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg p-6 max-w-sm w-full">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold">Verify Phone Number</h3>
+            <h3 class="text-xl font-bold">Verify Your Email</h3>
             <button id="closeOtpModal" class="text-gray-500 hover:text-gray-700">
                 &times;
             </button>
-        </div>
-        <div id="otpMessage" class="mb-4 p-2 bg-yellow-100 text-center hidden">
-            <p class="font-bold">LOCAL DEVELOPMENT OTP:</p>
-            <p id="displayOtp" class="text-2xl"></p>
-            <p class="text-sm">(In production, this would be sent via SMS)</p>
         </div>
         <form id="otpForm" method="POST" action="{{ route('verify.otp') }}">
             @csrf

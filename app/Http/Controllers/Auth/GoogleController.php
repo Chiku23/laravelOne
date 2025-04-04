@@ -60,7 +60,7 @@ class GoogleController extends Controller
                 'number' => $user->number
             ]);
             // Redirect to intended URL
-            return redirect()->intended('dashboard')->with('status', 'Welcome...!');
+            return redirect()->route('dashboard')->with('status', 'Welcome...!');
 
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Google login failed');

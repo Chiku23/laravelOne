@@ -74,29 +74,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const otpModal = document.getElementById('otpModal');
     const otpForm = document.getElementById('otpForm');
     const otpError = document.getElementById('otpError');
-    const displayOtp = document.getElementById('displayOtp');
     const resendOtpBtn = document.getElementById('resendOtp');
     const closeOtpModal = document.getElementById('closeOtpModal');
-    const csrfToken = document.querySelector('input[name="_token"]').value;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const errorboxes = document.querySelectorAll('.errorbox');
 
-
+    // Enhanced fetch options
+    const fetchOptions = {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        };
     // Register form submission
     registerForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         try {
             const response = await fetch(this.action, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken
-                },
+                ...fetchOptions,
                 body: new FormData(this)
             });
-            
+
             const data = await response.json();
-            console.log(data.errors);
+
             if (!response.ok) {
             // Handle validation errors
             if (data.errors) {
@@ -117,10 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             throw new Error(data.message || 'Registration failed');
         }
-            // Show OTP modal with the received OTP (for development)
             otpModal.classList.remove('hidden');
-            displayOtp.textContent = data.otp;
-            document.getElementById('otpMessage').classList.remove('hidden');
         } catch (error) {
             console.error('Registration error:', error);
         }
@@ -134,11 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(this.action, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken
-                },
+                ...fetchOptions,
                 body: new FormData(this)
             });
             const data = await response.json();
@@ -158,16 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch('{{ route("resend.otp") }}', {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken
-                }
+                ...fetchOptions,
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || 'Failed to resend OTP');
-            // Update displayed OTP
-            displayOtp.textContent = data.otp;
             
         } catch (error) {
             otpError.textContent = error.message;
