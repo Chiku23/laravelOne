@@ -13,6 +13,8 @@
     $userName = $arrUser['name'];
     $userEmail = $arrUser['email'];
     $userNumber = $arrUser['number'];
+
+    $strInputClass="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300 mt-2 mb-4";
 @endphp
 <div class="accountSettingMain sm:w-1/2">
     <h2 class=" font-bold mb-4 text-2xl border-b border-slate-400 pb-2">Update Password</h2>
@@ -22,11 +24,11 @@
         @csrf
         <div class="formContent flex flex-col">
             <label for="password">Current Password</label>
-            <input type="text" id="password" name="password" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
+            <input type="text" id="password" name="password" class="{{$strInputClass}}">
             <label for="newpassword">New Password:</label>
-            <input type="text" id="newpassword" name="newpassword" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
+            <input type="text" id="newpassword" name="newpassword" class="{{$strInputClass}}">
             <label for="newpassword_confirmation">Confirm New Password:</label>
-            <input type="text" id="newpassword_confirmation" name="newpassword_confirmation" class="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300">
+            <input type="text" id="newpassword_confirmation" name="newpassword_confirmation" class="{{$strInputClass}}">
             <div class="Actions mt-3 flex">
                 <button type="submit" class="bg-green-500 px-5 py-2 rounded">Update</button>
             </div>

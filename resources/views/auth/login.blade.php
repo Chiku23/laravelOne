@@ -25,7 +25,7 @@
             <button type="submit" class="bg-green-500 px-5 py-2 rounded border-2 border-green-500 hover:border-green-900 hover:bg-green-600 font-bold text-black hover:text-white">Login</button>
         </div>
         <div class="registerUser text-center mt-2">
-            Don't have an account Register? <a href="{{route('register')}}"><u class="text-blue-500">Here</u></a>
+            Don't have an account? Register <a href="{{route('register')}}"><u class="text-blue-500">Here</u></a>
         </div>
         <a href="{{ url('/auth/google') }}" class="border-2 border-white mt-4 flex items-center justify-center border-2 border-black">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" class="w-5 h-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12
