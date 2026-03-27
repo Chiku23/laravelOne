@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
@@ -43,6 +44,10 @@ Route::get('/resend-otp', [RegisterController::class, 'resendOtp'])->name('resen
 
 Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
+
+Route::get('/viewBlog/{id}', [BlogsController::class,'viewBlog'])->name('viewBlog');
+Route::post('/add-comment/{id}', [BlogsController::class,'addComment'])->name('viewBlog.comment.add');
+// Route::delete('/delete-comment/{id}', [BlogsController::class,'deleteComment'])->name('viewBlog.comment.delete');
 
 Route::prefix('dashboard')->group(function(){
     Route::get('/', [DashboardController::class,'getUsersBlogs'])->name('dashboard');

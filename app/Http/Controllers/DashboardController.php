@@ -162,7 +162,7 @@ class DashboardController extends Controller
         $blog = new Blog();
         $blog->title = $validatedData['title'];
         $blog->description = $validatedData['content'];
-        $blog->thumbnail = $validatedData['thumbnailImage'];
+        $blog->thumbnail = $validatedData['thumbnailImage'] ?? '';
         $blog->created_by = Auth::user()->user_id;
         $blog->save();
 

@@ -18,7 +18,7 @@
            <div class="blogsContainer">
                @if(!empty($blogs->isNotEmpty()))
                     @foreach($blogs as $blog)
-                        <div class="blogs flex flex-col sm:flex-row my-4 p-4 bg-gray-800 rounded shadow-lg gap-2">
+                        <div class="blogs flex flex-col sm:flex-row my-4 p-4 bg-gray-800 rounded shadow-lg gap-2 border-2 border-gray-500">
                             <div class="imageBox w-full sm:w-[25%] h-[200px] border-2">
                                 <img src="{{($blog->thumbnail) ? asset('/storage/'.$blog->thumbnail) : asset('/images/thumbnail-placeholder.jpg')}}" alt="thumbnail-image" class="object-cover h-full w-full">
                             </div>
@@ -32,7 +32,7 @@
                                     <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y');}}
                                 </div>
                                 <div class="BlogTitle mb-2 pb-2 text-2xl border-b border-slate-500 font-bold text-slate-200 font-mono">
-                                    {{$blog->title}}
+                                    <a href="{{ route('viewBlog',$blog->id) }}">{{$blog->title}}</a>
                                 </div>
                                 <div class="BlogDescription font-mono text-slate-300">
                                     {!! $blog->description !!}
