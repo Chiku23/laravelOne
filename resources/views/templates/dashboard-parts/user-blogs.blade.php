@@ -10,13 +10,13 @@
             </div>
             <div class="contentBox w-full" id="blog{{$blog->id;}}">
                 <div class="BlogPublishTime font-mono text-slate-400 mb-2">
-                   Publish Time: {{$blog->created_at->format('j/F/Y');}}
+                   Publish Time: {{$blog->created_at->format('j/F/Y h:i A');}}
                 </div>
                 <div class="BlogTitle mb-2 pb-2 text-2xl border-b border-slate-500 font-bold text-slate-200 font-mono">
                     {{$blog->title}}
                 </div>
                 <div class="BlogDescription font-mono text-slate-300">
-                    {!! $blog->description !!}
+                    {{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 250) }}
                 </div>
             </div>
             <div class="relative sm:absolute right-0 flex justify-end w-full">

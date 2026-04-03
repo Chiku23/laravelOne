@@ -24,18 +24,18 @@
                             </div>
                             <div class="contentBox w-full sm:w-[75%] sm:pt-2">
                                 <div class="BlogAuthor font-mono text-slate-400 mb-2 hidden sm:block">
-                                    <i class="fa-brands fa-creative-commons-by"></i> Author: {{ $blog->user->name }} | <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y');}}
+                                    <i class="fa-brands fa-creative-commons-by"></i> Author: {{ $blog->user->name }} | <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y h:i A');}}
                                 </div>
                                 <div class="BlogAuthorMobile font-mono text-slate-400 mb-2 sm:hidden">
                                     <i class="fa-brands fa-creative-commons-by"></i> Author: {{ $blog->user->name }} 
                                     <br>
-                                    <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y');}}
+                                    <i class="fa-solid fa-calendar-days"></i> {{$blog->created_at->format('j/F/Y h:i A');}}
                                 </div>
                                 <div class="BlogTitle mb-2 pb-2 text-2xl border-b border-slate-500 font-bold text-slate-200 font-mono">
                                     <a href="{{ route('viewBlog',$blog->id) }}">{{$blog->title}}</a>
                                 </div>
                                 <div class="BlogDescription font-mono text-slate-300">
-                                    {!! $blog->description !!}
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 250) }}
                                 </div>
                             </div>
                         </div>
