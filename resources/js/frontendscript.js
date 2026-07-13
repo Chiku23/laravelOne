@@ -9,24 +9,23 @@ jQuery(document).ready(function($) {
        $errorPopup.addClass("translate-x-0");
        startProgressBar();
     }
-    $(".error-popup-close").on('click',function(){
-        $errorPopup.removeClass("translate-x-0");
-        $errorPopup.addClass("translate-x-[150%]");
-        // Wait for 500ms and then remove the content inside $errorPopup
+    
+    $(".error-popup-close").on('click', function(){
+        $progressBar.stop();
+        $errorPopup.removeClass("translate-x-0").addClass("translate-x-[150%]");
         setTimeout(function() {
-            $errorPopup.empty(); // Removes the content inside the popup
+            $errorPopup.empty();
         }, 500);
-    })
+    });
+
     function startProgressBar() {
-        $progressBar.css("width", "0%"); // Start filling the progress bar
-        setTimeout(function() {
+        $progressBar.css("width", "100%");
+        $progressBar.animate({ width: "0%" }, 4000, "linear", function() {
             $errorPopup.removeClass("translate-x-0").addClass("translate-x-[150%]");
-            $progressBar.stop().css("width", "100%"); // Stop the progress bar animation
             setTimeout(function() {
-                $errorPopup.empty(); // Removes the content inside the popup
-                $progressBar.remove(); // Remove progress bar element
+                $errorPopup.empty();
             }, 500);
-        }, 3000); // Progress bar duration
+        });
     }
 
     // Function to handle the Filter Form
@@ -68,6 +67,17 @@ jQuery(document).ready(function($) {
         $('.MobileNav').removeClass('max-h-screen opacity-100').addClass('max-h-0 opacity-0');
         $('.mobileMenu.menuClose').removeClass('hidden');
         $('.mobileMenu.menuOpen').addClass('hidden');
+    });
+
+    // Theme Toggle Handler
+    $('.themeToggleBtn').on('click', function() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
     });
 
 });

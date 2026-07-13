@@ -178,8 +178,10 @@ class DashboardController extends Controller
             $userId = Auth::user()->user_id;
             // Retrieve blogs related to the user
             $blogs = Blog::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
+            $totalBlogs = $blogs->count();
+            $totalComments = \App\Models\Comment::whereIn('blog_id', $blogs->pluck('id'))->count();
 
-            return view('templates.dashboard-parts.user-blogs', compact('blogs','user'));
+            return view('templates.dashboard-parts.user-blogs', compact('blogs','user','totalBlogs','totalComments'));
         } else {
             // If no user is logged in, redirect to the login page or show an error
             return redirect()->route('login')->withErrors(['ErrorMSG' => 'You Are Not Logged In.']);

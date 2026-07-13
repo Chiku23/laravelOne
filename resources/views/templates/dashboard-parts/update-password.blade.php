@@ -4,33 +4,35 @@
 @php
     // Get the user Data in the array
     $arrUser = $user->toArray(); 
-    if(!empty($arrUser)){
-        $strMainMessage = "User Logged In.";
-    }else{
-        $strMainMessage = "Not Logged.";
-    } 
-
     $userName = $arrUser['name'];
-    $userEmail = $arrUser['email'];
-    $userNumber = $arrUser['number'];
-
-    $strInputClass="rounded bg-transparent active:outline:none border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300 mt-2 mb-4";
 @endphp
-<div class="accountSettingMain sm:w-1/2">
-    <h2 class=" font-bold mb-4 text-2xl border-b border-slate-400 pb-2">Update Password</h2>
-    <p class="my-2">Update your password below,</p>
+<div class="accountSettingMain max-w-xl">
+    <h2 class="font-bold mb-4 text-2xl border-b border-slate-200 dark:border-slate-800/80 pb-3 text-slate-800 dark:text-slate-100">Update Password</h2>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 font-sans">Keep your account secure by updating your password periodically:</p>
+    
     <!-- Form to update account Details-->
-    <form action="{{ route('updateUserPassword') }}" method="post" class="mt-2">
+    <form action="{{ route('updateUserPassword') }}" method="post" class="space-y-4">
         @csrf
-        <div class="formContent flex flex-col">
-            <label for="password">Current Password</label>
-            <input type="text" id="password" name="password" class="{{$strInputClass}}">
-            <label for="newpassword">New Password:</label>
-            <input type="text" id="newpassword" name="newpassword" class="{{$strInputClass}}">
-            <label for="newpassword_confirmation">Confirm New Password:</label>
-            <input type="text" id="newpassword_confirmation" name="newpassword_confirmation" class="{{$strInputClass}}">
-            <div class="Actions mt-3 flex">
-                <button type="submit" class="bg-green-500 px-5 py-2 rounded">Update</button>
+        <div class="formContent flex flex-col space-y-4">
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Current Password</label>
+                <input type="password" id="password" name="password" required class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans">
+            </div>
+            
+            <div class="space-y-1">
+                <label for="newpassword" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">New Password</label>
+                <input type="password" id="newpassword" name="newpassword" required class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans">
+            </div>
+            
+            <div class="space-y-1">
+                <label for="newpassword_confirmation" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Confirm New Password</label>
+                <input type="password" id="newpassword_confirmation" name="newpassword_confirmation" required class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans">
+            </div>
+
+            <div class="Actions pt-4">
+                <button type="submit" class="px-6 py-3 bg-indigo-650 hover:bg-indigo-600 border border-indigo-550/20 text-white text-sm font-bold rounded-xl transition-all">
+                    Update Password
+                </button>
             </div>
         </div>
     </form>

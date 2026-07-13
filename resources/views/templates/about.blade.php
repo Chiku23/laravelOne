@@ -1,18 +1,18 @@
 @extends('layout.app')
 
 @section('content')
-<div class="AboutMain">
-    <div class="ContainerTitle flex flex-col mx-auto justify-center p-4">
-        <div class="contentMain border-b text-center mb-4">
-            <h1 class="mb-2 text-2xl">About Us</h1>
+<div class="AboutMain w-full max-w-3xl mx-auto py-8">
+    <div class="bg-white dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-slate-850 p-8 rounded-3xl space-y-6 shadow-sm">
+        <div class="border-b border-slate-200 dark:border-slate-800/80 pb-4 text-center">
+            <h1 class="text-3xl font-extrabold text-slate-850 dark:text-slate-100">About Us</h1>
         </div>
-        <div class="contentMain">
-            <div class="content">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas fuga explicabo vitae esse, blanditiis voluptatum vel aut voluptatem! Sed, nobis dolore. Nesciunt perferendis voluptates quasi quisquam illum nulla dolores labore corporis aut inventore. Laudantium possimus nihil, consequatur voluptatibus sapiente aperiam odit culpa consequuntur quisquam autem molestias quia maxime exercitationem voluptas voluptates cumque enim eligendi veritatis maiores iure cum sed. Voluptates omnis voluptatum eaque dolores sunt facilis aliquam modi illo non iusto. Vitae quam natus tenetur quibusdam ipsum ea quisquam, inventore tempora reiciendis. Nesciunt quo rem voluptate accusantium magni cumque libero aperiam tempora eius velit. Assumenda quibusdam molestias odit inventore distinctio!
-            </div>
-            <div class="content">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas fuga explicabo vitae esse, blanditiis voluptatum vel aut voluptatem! Sed, nobis dolore. Nesciunt perferendis voluptates quasi quisquam illum nulla dolores labore corporis aut inventore. Laudantium possimus nihil, consequatur voluptatibus sapiente aperiam odit culpa consequuntur quisquam autem molestias quia maxime exercitationem voluptas voluptates cumque enim eligendi veritatis maiores iure cum sed. Voluptates omnis voluptatum eaque dolores sunt facilis aliquam modi illo non iusto. Vitae quam natus tenetur quibusdam ipsum ea quisquam, inventore tempora reiciendis. Nesciunt quo rem voluptate accusantium magni cumque libero aperiam tempora eius velit. Assumenda quibusdam molestias odit inventore distinctio!
-            </div>
+        <div class="text-slate-600 dark:text-slate-350 leading-relaxed font-sans space-y-4">
+            <p>
+                Welcome to <strong>Thought Threads</strong>, a space dedicated to sharing thoughts, stories, and ideas. Our platform is designed to provide developers, writers, and thinkers a clean and distraction-free environment to publish their works and engage in meaningful conversations.
+            </p>
+            <p>
+                Whether you want to document your journey, share tutorials, or simply enjoy reading articles written by others, Thought Threads is built to accommodate your creative and intellectual needs. Feel free to register an account, customize your profile, and start publishing today!
+            </p>
         </div>
     </div>
 </div>
