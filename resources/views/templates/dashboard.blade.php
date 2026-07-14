@@ -34,10 +34,7 @@
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span class="hidden sm:inline">Log Out</span>
             </a>
-            <!-- Form for logout -->
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                @csrf
-            </form>
+
         </div>
     </header>
 
@@ -78,7 +75,7 @@
         </aside>
 
         <!-- Main Panel Content Area -->
-        <main class="flex-grow overflow-y-auto bg-[#f0f2f5] dark:bg-[#121316] p-6 md:p-8 flex flex-col">
+        <main class="flex-grow overflow-y-auto bg-[#121316] p-6 md:p-8 flex flex-col">
             <div class="w-full max-w-4xl mx-auto flex-grow">
                 <div class="DashboardContent">
                     @yield('dashboard-content')

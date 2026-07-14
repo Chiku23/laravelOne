@@ -19,7 +19,7 @@ class BlogsController extends Controller
 
         $blog = Blog::find($request->id);
         if (!$blog) {
-            return redirect()->back()->withErrors('ErrorMSG', 'Something Went Wrong!');
+            return redirect()->back()->withErrors(['ErrorMSG' => 'Something Went Wrong!']);
         }
         $user = Auth::user();
         if (!$user) {
@@ -32,7 +32,6 @@ class BlogsController extends Controller
         ]);
 
         // Create a new blog post
-        $blog = Blog::find($request->id);
         $comment = new Comment();
         $comment->comment = $request->input('usercomment');
         $comment->blog_id = $blog->id;

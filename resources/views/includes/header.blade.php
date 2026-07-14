@@ -7,14 +7,7 @@
     $userImage = $avatar ?? asset('images/person.png');
 @endphp
 
-@php
-    $avatar = null;
-    if(session('user')){
-        $user = session('user');
-        $avatar = $user['avatar'] ?? null;
-    }
-    $userImage = $avatar ?? asset('images/person.png');
-@endphp
+
 
 <header class="sticky top-0 z-40 w-full bg-white/80 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-250">
     <div class="flex md:flex-row flex-col w-full sm:justify-between max-w-1200 mx-auto px-4 sm:px-6 lg:px-8 py-4 font-bold items-center">
@@ -24,11 +17,6 @@
                 Thought Threads
             </a>
             <div class="flex items-center gap-3 md:hidden">
-                <!-- Mobile Theme Toggle Button -->
-                <button class="themeToggleBtn p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors" title="Toggle Theme">
-                    <i class="fa-solid fa-sun hidden dark:inline-block"></i>
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                </button>
                 {{-- Mobile Breakpoint Hamburger --}}
                 <div class="Hamburger text-2xl cursor-pointer flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors">
                     <div class="mobileMenu menuClose"><i class="fa-solid fa-bars"></i></div>
@@ -79,11 +67,6 @@
                 </a>
             @endif
 
-            <!-- Desktop Theme Toggle Button -->
-            <button class="themeToggleBtn p-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors ml-2" title="Toggle Theme">
-                <i class="fa-solid fa-sun hidden dark:inline-block text-lg"></i>
-                <i class="fa-solid fa-moon dark:hidden text-lg"></i>
-            </button>
         </div>
 
         <!-- Mobile Nav Items -->

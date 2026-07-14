@@ -194,12 +194,12 @@ class DashboardController extends Controller
         $blog = Blog::find($id);
 
         if (!$blog) {
-            return redirect()->back()->withErrors('ErrorMSG', 'Something Went Wrong!');
+            return redirect()->back()->withErrors(['ErrorMSG' => 'Something Went Wrong!']);
         }
 
         // Ensure only the blog owner can delete it
         if ($blog->created_by !== Auth::user()->user_id) {
-            return redirect()->back()->withErrors('ErrorMSG', 'Unauthorized action!');
+            return redirect()->back()->withErrors(['ErrorMSG' => 'Unauthorized action!']);
         }
 
         $blog->delete();
@@ -212,12 +212,12 @@ class DashboardController extends Controller
         $blog = Blog::find($request->editblogid);
 
         if (!$blog) {
-            return redirect()->back()->withErrors('ErrorMSG', 'Something Went Wrong!');
+            return redirect()->back()->withErrors(['ErrorMSG' => 'Something Went Wrong!']);
         }
 
         // Ensure only the blog owner can delete it
         if ($blog->created_by !== Auth::user()->user_id) {
-            return redirect()->back()->withErrors('ErrorMSG', 'Unauthorized action!');
+            return redirect()->back()->withErrors(['ErrorMSG' => 'Unauthorized action!']);
         }
         return view('templates/dashboard-parts/addblog', compact('user', 'blog'));
     }

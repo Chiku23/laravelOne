@@ -123,7 +123,13 @@
                 </div>
                 <!-- Upload pane -->
                 <div id="thumb-pane-upload">
-                    <input type="file" name="thumbnailImage" id="thumbnailImage" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border file:border-slate-200 dark:file:border-slate-700 file:text-[10px] file:font-semibold file:bg-slate-50 file:text-slate-700 dark:file:bg-slate-800 dark:file:text-slate-300 hover:file:bg-[#2271b1]/10 dark:hover:file:bg-indigo-500/10 file:cursor-pointer transition-all">
+                    <div class="flex items-center gap-3">
+                        <input type="file" name="thumbnailImage" id="thumbnailImage" accept="image/*" class="hidden">
+                        <button type="button" onclick="document.getElementById('thumbnailImage').click()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded cursor-pointer transition-all">
+                            Choose File
+                        </button>
+                        <span id="thumbnailFileName" class="text-xs text-slate-550 dark:text-slate-400">No file chosen</span>
+                    </div>
                 </div>
                 <!-- URL pane -->
                 <div id="thumb-pane-url" class="hidden">
@@ -369,21 +375,40 @@
     const form = document.getElementById('publish-blog-form');
     const hiddenContentInput = document.getElementById('hidden-content');
     
-    // Parses CSS padding shorthand string into top, right, bottom, left object
+    // Parses CSS padding shorthand string into top, right, bottom, left numeric object
     function parsePaddingShorthand(paddingStr) {
-        if (!paddingStr) return { top: '0px', right: '0px', bottom: '0px', left: '0px' };
+        const parseNum = (val) => {
+            const num = parseFloat(val);
+            return isNaN(num) ? 0 : num;
+        };
+        if (!paddingStr) return { top: 0, right: 0, bottom: 0, left: 0 };
         let cleanStr = paddingStr.replace('!important', '').trim();
         const parts = cleanStr.split(/\s+/);
         if (parts.length === 1) {
-            return { top: parts[0], right: parts[0], bottom: parts[0], left: parts[0] };
+            const val = parseNum(parts[0]);
+            return { top: val, right: val, bottom: val, left: val };
         } else if (parts.length === 2) {
-            return { top: parts[0], right: parts[1], bottom: parts[0], left: parts[1] };
+            const v = parseNum(parts[0]), h = parseNum(parts[1]);
+            return { top: v, right: h, bottom: v, left: h };
         } else if (parts.length === 3) {
-            return { top: parts[0], right: parts[1], bottom: parts[2], left: parts[1] };
+            const t = parseNum(parts[0]), h = parseNum(parts[1]), b = parseNum(parts[2]);
+            return { top: t, right: h, bottom: b, left: h };
         } else if (parts.length >= 4) {
-            return { top: parts[0], right: parts[1], bottom: parts[2], left: parts[3] };
+            return {
+                top: parseNum(parts[0]),
+                right: parseNum(parts[1]),
+                bottom: parseNum(parts[2]),
+                left: parseNum(parts[3])
+            };
         }
-        return { top: '0px', right: '0px', bottom: '0px', left: '0px' };
+        return { top: 0, right: 0, bottom: 0, left: 0 };
+    }
+
+    // Formats and sanitizes a padding input value to a standard pixel unit
+    function formatPaddingUnit(val) {
+        const num = parseFloat(val);
+        if (isNaN(num) || num < 0) return '0px';
+        return num + 'px';
     }
 
     // Resolves unified shorthand padding string from TRBL input fields
@@ -393,12 +418,7 @@
         const padBottom = block.querySelector('.block-padding-bottom') ? (block.querySelector('.block-padding-bottom').value.trim() || '0px') : '0px';
         const padLeft = block.querySelector('.block-padding-left') ? (block.querySelector('.block-padding-left').value.trim() || '0px') : '0px';
         
-        const formatUnit = (val) => {
-            if (!val) return '0px';
-            if (/^\d+$/.test(val)) return val + 'px';
-            return val;
-        };
-        return `${formatUnit(padTop)} ${formatUnit(padRight)} ${formatUnit(padBottom)} ${formatUnit(padLeft)}`;
+        return `${formatPaddingUnit(padTop)} ${formatPaddingUnit(padRight)} ${formatPaddingUnit(padBottom)} ${formatPaddingUnit(padLeft)}`;
     }
     
     // Track insertion index
@@ -483,10 +503,10 @@
             <div class="space-y-1 font-sans">
                 <label class="block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Padding (TRBL)</label>
                 <div class="grid grid-cols-4 gap-1">
-                    <input type="text" placeholder="Top" class="block-padding-top w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.top}" oninput="applyStyles('${blockId}')" title="Top Padding">
-                    <input type="text" placeholder="Right" class="block-padding-right w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.right}" oninput="applyStyles('${blockId}')" title="Right Padding">
-                    <input type="text" placeholder="Bottom" class="block-padding-bottom w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.bottom}" oninput="applyStyles('${blockId}')" title="Bottom Padding">
-                    <input type="text" placeholder="Left" class="block-padding-left w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.left}" oninput="applyStyles('${blockId}')" title="Left Padding">
+                    <input type="number" min="0" placeholder="0" class="block-padding-top w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.top}" oninput="applyStyles('${blockId}')" title="Top Padding">
+                    <input type="number" min="0" placeholder="0" class="block-padding-right w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.right}" oninput="applyStyles('${blockId}')" title="Right Padding">
+                    <input type="number" min="0" placeholder="0" class="block-padding-bottom w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.bottom}" oninput="applyStyles('${blockId}')" title="Bottom Padding">
+                    <input type="number" min="0" placeholder="0" class="block-padding-left w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-xs rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.left}" oninput="applyStyles('${blockId}')" title="Left Padding">
                 </div>
             </div>
         `;
@@ -588,7 +608,7 @@
                         <option value="h3" ${headingLevel === 'h3' ? 'selected' : ''}>H3</option>
                         <option value="h4" ${headingLevel === 'h4' ? 'selected' : ''}>H4</option>
                     </select>
-                    <input type="text" value="${content}" class="flex-grow px-3 py-1.5 border border-slate-200 dark:border-slate-800 rounded text-sm bg-slate-50/50 dark:bg-slate-900/40 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#2271b1] dark:focus:ring-indigo-500 block-input caret-[#2271b1] dark:caret-indigo-400 placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-955 transition-colors" placeholder="Heading text..." oninput="previewBlock('${blockId}')">
+                    <input type="text" value="${content}" class="flex-grow px-3 py-1.5 border border-slate-200 dark:border-slate-800 rounded text-sm bg-slate-50/50 dark:bg-slate-900/40 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#2271b1] dark:focus:ring-indigo-500 block-input caret-[#2271b1] dark:caret-indigo-400 placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-950 transition-colors" placeholder="Heading text..." oninput="previewBlock('${blockId}')">
                 </div>
             `;
             extraSettings = coreTextSettings + textDecorators;
@@ -799,7 +819,7 @@
             innerHtml = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 block-columns-grid transition-all font-sans">
                     <!-- Column 1 Slot -->
-                    <div class="p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot" data-index="1">
+                    <div class="relative p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot" data-index="1">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1 select-none">
                             <span class="text-[9px] uppercase font-bold text-slate-450 dark:text-slate-500">Column 1</span>
                             <div class="flex items-center gap-1.5">
@@ -814,7 +834,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="slot-settings-panel hidden p-2 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/5 space-y-2 mb-2 rounded">
+                        <div class="slot-settings-panel hidden p-3 border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 space-y-3 mb-2 rounded-lg transition-all">
                             ${renderSlotSettingsHTML(blockId, 1, col1Type, {
                                 color: styles.col1Color,
                                 bgColor: styles.col1BgColor,
@@ -835,7 +855,7 @@
                     </div>
 
                     <!-- Column 2 Slot -->
-                    <div class="p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot" data-index="2">
+                    <div class="relative p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot" data-index="2">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1 select-none">
                             <span class="text-[9px] uppercase font-bold text-slate-450 dark:text-slate-500">Column 2</span>
                             <div class="flex items-center gap-1.5">
@@ -850,7 +870,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="slot-settings-panel hidden p-2 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/5 space-y-2 mb-2 rounded">
+                        <div class="slot-settings-panel hidden p-3 border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 space-y-3 mb-2 rounded-lg transition-all">
                             ${renderSlotSettingsHTML(blockId, 2, col2Type, {
                                 color: styles.col2Color,
                                 bgColor: styles.col2BgColor,
@@ -871,7 +891,7 @@
                     </div>
 
                     <!-- Column 3 Slot -->
-                    <div class="p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="3">
+                    <div class="relative p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="3">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1 select-none">
                             <span class="text-[9px] uppercase font-bold text-slate-455 dark:text-slate-500">Column 3</span>
                             <div class="flex items-center gap-1.5">
@@ -886,7 +906,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="slot-settings-panel hidden p-2 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/5 space-y-2 mb-2 rounded">
+                        <div class="slot-settings-panel hidden p-3 border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 space-y-3 mb-2 rounded-lg transition-all">
                             ${renderSlotSettingsHTML(blockId, 3, col3Type, {
                                 color: styles.col3Color,
                                 bgColor: styles.col3BgColor,
@@ -907,7 +927,7 @@
                     </div>
 
                     <!-- Column 4 Slot -->
-                    <div class="p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="4">
+                    <div class="relative p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="4">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1 select-none">
                             <span class="text-[9px] uppercase font-bold text-slate-455 dark:text-slate-500">Column 4</span>
                             <div class="flex items-center gap-1.5">
@@ -922,7 +942,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="slot-settings-panel hidden p-2 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/5 space-y-2 mb-2 rounded">
+                        <div class="slot-settings-panel hidden p-3 border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 space-y-3 mb-2 rounded-lg transition-all">
                             ${renderSlotSettingsHTML(blockId, 4, col4Type, {
                                 color: styles.col4Color,
                                 bgColor: styles.col4BgColor,
@@ -943,7 +963,7 @@
                     </div>
 
                     <!-- Column 5 Slot -->
-                    <div class="p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="5">
+                    <div class="relative p-3 border border-slate-200/50 dark:border-slate-800/80 rounded bg-slate-50/30 dark:bg-slate-950/10 space-y-2 block-column-slot hidden" data-index="5">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1 select-none">
                             <span class="text-[9px] uppercase font-bold text-slate-455 dark:text-slate-500">Column 5</span>
                             <div class="flex items-center gap-1.5">
@@ -958,7 +978,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="slot-settings-panel hidden p-2 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/5 space-y-2 mb-2 rounded">
+                        <div class="slot-settings-panel hidden p-3 border border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 space-y-3 mb-2 rounded-lg transition-all">
                             ${renderSlotSettingsHTML(blockId, 5, col5Type, {
                                 color: styles.col5Color,
                                 bgColor: styles.col5BgColor,
@@ -1161,35 +1181,41 @@
         
         const paddingObj = parsePaddingShorthand(padding);
         
-        let fields = '';
+        // Header info
+        let fields = `
+            <div class="flex items-center justify-between pb-1.5 border-b border-slate-100 dark:border-slate-800/85">
+                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1"><i class="fa-solid fa-sliders text-xs"></i> Column Slot Styles</span>
+                <button type="button" onclick="toggleSlotSettings('${blockId}', ${slotIdx})" class="text-slate-400 hover:text-rose-500 text-xs cursor-pointer transition-colors p-0.5"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        `;
         
         // Formatting decorators
         const textDecorators = `
             <div class="space-y-1 font-sans">
-                <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">Formatting</label>
-                <div class="flex items-center gap-1 mt-0.5">
-                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'bold')" class="px-2 py-0.5 border border-slate-200 dark:border-slate-700 rounded font-bold text-[10px] slot-format-bold transition-all cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 ${isBold ? 'format-btn-active' : ''}" title="Bold">B</button>
-                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'italic')" class="px-2 py-0.5 border border-slate-200 dark:border-slate-700 rounded italic text-[10px] slot-format-italic transition-all cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 ${isItalic ? 'format-btn-active' : ''}" title="Italic">I</button>
-                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'underline')" class="px-2 py-0.5 border border-slate-200 dark:border-slate-700 rounded underline text-[10px] slot-format-underline transition-all cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 ${isUnderline ? 'format-btn-active' : ''}" title="Underline">U</button>
+                <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Formatting</label>
+                <div class="flex items-center border border-slate-200 dark:border-slate-800 rounded overflow-hidden w-fit bg-slate-50 dark:bg-slate-900 mt-0.5">
+                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'bold')" class="px-2.5 py-1 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-[10px] font-bold slot-format-bold transition-colors ${isBold ? 'bg-indigo-50/50 dark:bg-indigo-950/40 text-[#2271b1] dark:text-indigo-400 font-black' : ''}" title="Bold">B</button>
+                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'italic')" class="px-2.5 py-1 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-[10px] italic slot-format-italic border-l border-slate-200 dark:border-slate-800 transition-colors ${isItalic ? 'bg-indigo-50/50 dark:bg-indigo-950/40 text-[#2271b1] dark:text-indigo-400' : ''}" title="Italic">I</button>
+                    <button type="button" onclick="toggleSlotFormat('${blockId}', ${slotIdx}, 'underline')" class="px-2.5 py-1 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-[10px] underline slot-format-underline border-l border-slate-200 dark:border-slate-800 transition-colors ${isUnderline ? 'bg-indigo-50/50 dark:bg-indigo-950/40 text-[#2271b1] dark:text-indigo-400' : ''}" title="Underline">U</button>
                 </div>
             </div>
         `;
         
         // Colors
         fields += `
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
                 <div class="space-y-1 font-sans">
-                    <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Text Color</label>
-                    <div class="flex items-center gap-1">
-                        <input type="color" class="w-5 h-5 border-0 bg-transparent cursor-pointer rounded-full overflow-hidden slot-color" oninput="onSlotPickerChange('${blockId}', ${slotIdx}, 'text')" value="${textColor}">
-                        <input type="text" class="block-hex-input px-1 py-0.5 border border-slate-200 dark:border-slate-700 rounded slot-color-text focus:outline-none text-[10px]" oninput="syncSlotColorInput('${blockId}', ${slotIdx}, 'text')" placeholder="#1e293b" value="${textColor}">
+                    <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Text Color</label>
+                    <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded p-1">
+                        <input type="color" class="w-4 h-4 border-0 bg-transparent cursor-pointer rounded-full overflow-hidden slot-color" oninput="onSlotPickerChange('${blockId}', ${slotIdx}, 'text')" value="${textColor}">
+                        <input type="text" class="block-hex-input w-full bg-transparent border-0 focus:ring-0 focus:outline-none p-0 text-[10px] text-slate-700 dark:text-slate-300 font-mono" oninput="syncSlotColorInput('${blockId}', ${slotIdx}, 'text')" placeholder="Inherit" value="${textColor}">
                     </div>
                 </div>
                 <div class="space-y-1 font-sans">
-                    <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Bg Color <button type="button" onclick="clearSlotBgColor('${blockId}', ${slotIdx})" class="ml-0.5 text-[7px] text-rose-400 hover:text-rose-600 underline cursor-pointer">clear</button></label>
-                    <div class="flex items-center gap-1">
-                        <input type="color" class="w-5 h-5 border-0 bg-transparent cursor-pointer rounded-full overflow-hidden slot-bgcolor" oninput="onSlotPickerChange('${blockId}', ${slotIdx}, 'bg')" value="${bgColor === 'transparent' ? '#ffffff' : bgColor}">
-                        <input type="text" class="block-hex-input px-1 py-0.5 border border-slate-200 dark:border-slate-700 rounded slot-bgcolor-text focus:outline-none text-[10px]" oninput="syncSlotColorInput('${blockId}', ${slotIdx}, 'bg')" placeholder="Trans" value="${bgColor === 'transparent' ? '' : bgColor}">
+                    <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center justify-between">Bg Color <button type="button" onclick="clearSlotBgColor('${blockId}', ${slotIdx})" class="text-[8px] text-rose-400 hover:text-rose-500 underline cursor-pointer">clear</button></label>
+                    <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded p-1">
+                        <input type="color" class="w-4 h-4 border-0 bg-transparent cursor-pointer rounded-full overflow-hidden slot-bgcolor" oninput="onSlotPickerChange('${blockId}', ${slotIdx}, 'bg')" value="${bgColor === 'transparent' ? '#ffffff' : bgColor}">
+                        <input type="text" class="block-hex-input w-full bg-transparent border-0 focus:ring-0 focus:outline-none p-0 text-[10px] text-slate-700 dark:text-slate-350 font-mono" oninput="syncSlotColorInput('${blockId}', ${slotIdx}, 'bg')" placeholder="Trans" value="${bgColor === 'transparent' ? '' : bgColor}">
                     </div>
                 </div>
             </div>
@@ -1198,10 +1224,10 @@
         if (type === 'text') {
             // Typography options
             fields += `
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2.5">
                     <div class="space-y-1 font-sans">
-                        <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Font Size</label>
-                        <select class="w-full px-1 py-0.5 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-850 dark:text-slate-200 slot-size focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
+                        <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Font Size</label>
+                        <select class="w-full px-2 py-1 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-size focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
                             <option value="12px" ${fontSize === '12px' ? 'selected' : ''}>12px</option>
                             <option value="13px" ${fontSize === '13px' ? 'selected' : ''}>13px</option>
                             <option value="14px" ${fontSize === '14px' ? 'selected' : ''}>14px</option>
@@ -1215,26 +1241,26 @@
                         </select>
                     </div>
                     <div class="space-y-1 font-sans">
-                        <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Text Align</label>
-                        <select class="w-full px-1 py-0.5 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-850 dark:text-slate-200 slot-align focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
+                        <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Text Align</label>
+                        <select class="w-full px-2 py-1 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-align focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
                             <option value="left" ${textAlign === 'left' ? 'selected' : ''}>Left</option>
                             <option value="center" ${textAlign === 'center' ? 'selected' : ''}>Center</option>
                             <option value="right" ${textAlign === 'right' ? 'selected' : ''}>Right</option>
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2.5">
                     <div class="space-y-1 font-sans">
-                        <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Font Weight</label>
-                        <select class="w-full px-1 py-0.5 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-855 dark:text-slate-200 slot-weight focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
+                        <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Font Weight</label>
+                        <select class="w-full px-2 py-1 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-weight focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
                             <option value="300" ${fontWeight === '300' ? 'selected' : ''}>Light</option>
                             <option value="400" ${fontWeight === '400' ? 'selected' : ''}>Normal</option>
                             <option value="700" ${fontWeight === '700' ? 'selected' : ''}>Bold</option>
                         </select>
                     </div>
                     <div class="space-y-1 font-sans">
-                        <label class="block text-[8px] font-bold text-slate-455 dark:text-slate-500 uppercase tracking-wider">Line Height</label>
-                        <select class="w-full px-1 py-0.5 border border-slate-200 dark:border-slate-700 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-855 dark:text-slate-200 slot-lineheight focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
+                        <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Line Height</label>
+                        <select class="w-full px-2 py-1 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-lineheight focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
                             <option value="1.2" ${lineHeight === '1.2' ? 'selected' : ''}>Tight</option>
                             <option value="1.5" ${lineHeight === '1.5' ? 'selected' : ''}>Normal</option>
                             <option value="1.8" ${lineHeight === '1.8' ? 'selected' : ''}>Loose</option>
@@ -1247,22 +1273,24 @@
         
         // Spacing & corners
         fields += `
-            <div class="space-y-1 font-sans">
-                <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Padding (TRBL)</label>
-                <div class="grid grid-cols-4 gap-1">
-                    <input type="text" placeholder="T" class="slot-padding-top w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.top}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Top Padding">
-                    <input type="text" placeholder="R" class="slot-padding-right w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.right}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Right Padding">
-                    <input type="text" placeholder="B" class="slot-padding-bottom w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.bottom}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Bottom Padding">
-                    <input type="text" placeholder="L" class="slot-padding-left w-full px-1 py-0.5 text-center border border-slate-200 dark:border-slate-700 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none" value="${paddingObj.left}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Left Padding">
+            <div class="grid grid-cols-2 gap-2.5">
+                <div class="space-y-1 font-sans">
+                    <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Padding</label>
+                    <div class="grid grid-cols-4 gap-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded p-1">
+                        <input type="number" min="0" placeholder="0" class="slot-padding-top w-full bg-transparent border-0 text-center text-[10px] text-slate-700 dark:text-slate-350 p-0 focus:outline-none focus:ring-0 focus:ring-offset-0" value="${paddingObj.top}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Top Padding">
+                        <input type="number" min="0" placeholder="0" class="slot-padding-right w-full bg-transparent border-0 text-center text-[10px] text-slate-700 dark:text-slate-350 p-0 focus:outline-none focus:ring-0 focus:ring-offset-0" value="${paddingObj.right}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Right Padding">
+                        <input type="number" min="0" placeholder="0" class="slot-padding-bottom w-full bg-transparent border-0 text-center text-[10px] text-slate-700 dark:text-slate-350 p-0 focus:outline-none focus:ring-0 focus:ring-offset-0" value="${paddingObj.bottom}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Bottom Padding">
+                        <input type="number" min="0" placeholder="0" class="slot-padding-left w-full bg-transparent border-0 text-center text-[10px] text-slate-700 dark:text-slate-350 p-0 focus:outline-none focus:ring-0 focus:ring-offset-0" value="${paddingObj.left}" oninput="applySlotStyles('${blockId}', ${slotIdx})" title="Left Padding">
+                    </div>
                 </div>
-            </div>
-            <div class="space-y-1 font-sans">
-                <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-555 uppercase tracking-wider">Rounded Corner</label>
-                <select class="w-full px-1 py-0.5 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-radius focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
-                    <option value="0px" ${borderRadius === '0px' ? 'selected' : ''}>None</option>
-                    <option value="6px" ${borderRadius === '6px' ? 'selected' : ''}>Small</option>
-                    <option value="12px" ${borderRadius === '12px' ? 'selected' : ''}>Medium</option>
-                </select>
+                <div class="space-y-1 font-sans">
+                    <label class="block text-[10px] font-medium text-slate-500 dark:text-slate-400">Corners</label>
+                    <select class="w-full px-2 py-1 border border-slate-200 dark:border-slate-800 text-[10px] rounded bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 slot-radius focus:outline-none" onchange="applySlotStyles('${blockId}', ${slotIdx})">
+                        <option value="0px" ${borderRadius === '0px' ? 'selected' : ''}>None</option>
+                        <option value="6px" ${borderRadius === '6px' ? 'selected' : ''}>Small</option>
+                        <option value="12px" ${borderRadius === '12px' ? 'selected' : ''}>Medium</option>
+                    </select>
+                </div>
             </div>
         `;
         
@@ -1298,12 +1326,7 @@
         const padBottom = slot.querySelector('.slot-padding-bottom') ? (slot.querySelector('.slot-padding-bottom').value.trim() || '0px') : '0px';
         const padLeft = slot.querySelector('.slot-padding-left') ? (slot.querySelector('.slot-padding-left').value.trim() || '0px') : '0px';
         
-        const formatUnit = (val) => {
-            if (!val) return '0px';
-            if (/^\d+$/.test(val)) return val + 'px';
-            return val;
-        };
-        const padding = `${formatUnit(padTop)} ${formatUnit(padRight)} ${formatUnit(padBottom)} ${formatUnit(padLeft)}`;
+        const padding = `${formatPaddingUnit(padTop)} ${formatPaddingUnit(padRight)} ${formatPaddingUnit(padBottom)} ${formatPaddingUnit(padLeft)}`;
         
         const radius = slot.querySelector('.slot-radius') ? slot.querySelector('.slot-radius').value : '0px';
         
@@ -1931,12 +1954,7 @@
                     const padRight = slot.querySelector('.slot-padding-right') ? (slot.querySelector('.slot-padding-right').value.trim() || '0px') : '0px';
                     const padBottom = slot.querySelector('.slot-padding-bottom') ? (slot.querySelector('.slot-padding-bottom').value.trim() || '0px') : '0px';
                     const padLeft = slot.querySelector('.slot-padding-left') ? (slot.querySelector('.slot-padding-left').value.trim() || '0px') : '0px';
-                    const formatUnit = (val) => {
-                        if (!val) return '0px';
-                        if (/^\d+$/.test(val)) return val + 'px';
-                        return val;
-                    };
-                    const slotPadding = `${formatUnit(padTop)} ${formatUnit(padRight)} ${formatUnit(padBottom)} ${formatUnit(padLeft)}`;
+                    const slotPadding = `${formatPaddingUnit(padTop)} ${formatPaddingUnit(padRight)} ${formatPaddingUnit(padBottom)} ${formatPaddingUnit(padLeft)}`;
                     
                     const radiusVal = slot.querySelector('.slot-radius') ? slot.querySelector('.slot-radius').value : '0px';
                     
@@ -2236,8 +2254,12 @@
     }
 
     thumbnailInput.addEventListener('change', function(e) {
+        const fileNamespan = document.getElementById('thumbnailFileName');
         if (e.target.files.length > 0) {
+            if (fileNamespan) fileNamespan.textContent = e.target.files[0].name;
             handlePreview(URL.createObjectURL(e.target.files[0]));
+        } else {
+            if (fileNamespan) fileNamespan.textContent = 'No file chosen';
         }
     });
 
@@ -2251,6 +2273,10 @@
         @else
             {{-- Storage path thumbnail --}}
             handlePreview("{{ asset('storage/' . $thumb) }}");
+            document.addEventListener('DOMContentLoaded', () => {
+                const fileNamespan = document.getElementById('thumbnailFileName');
+                if (fileNamespan) fileNamespan.textContent = "{{ basename($thumb) }}";
+            });
         @endif
     @endif
 </script>

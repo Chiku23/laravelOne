@@ -4,7 +4,3 @@
         <div class="mt-1 text-xs text-slate-600">Thought Threads &mdash; A Modern Space for Sharing Ideas</div>
     </div>
 </footer>
-<!-- Logout form -->
-<form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
-    @csrf
-</form>

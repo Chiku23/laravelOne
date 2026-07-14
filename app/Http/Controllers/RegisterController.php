@@ -49,10 +49,21 @@ class RegisterController extends Controller
             $subject = 'LaravelOne - OTP Verification';
             $content = 'Hey, your registration OTP is '.$otp;
             
-            Mail::raw($content, function($message) use ($toEmail, $subject) {
-                $message->to($toEmail)
-                        ->subject($subject);
-            });
+            try {
+                Mail::raw($content, function($message) use ($toEmail, $subject) {
+                    $message->to($toEmail)
+                            ->subject($subject);
+                });
+            } catch (\Throwable $mailException) {
+                Log::error('SMTP OTP delivery failed: ' . $mailException->getMessage(), [
+                    'email' => $toEmail,
+                    'otp' => $otp
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to send OTP verification email. Please check your mail configuration.'
+                ], 500);
+            }
 
             return response()->json([
                 'success' => true,
@@ -150,10 +161,21 @@ class RegisterController extends Controller
         $subject = 'LaravelOne - OTP Verification';
         $content = 'Hey, your registration OTP is '.$newOtp;
         
-        Mail::raw($content, function($message) use ($toEmail, $subject) {
-            $message->to($toEmail)
-                    ->subject($subject);
-        });
+        try {
+            Mail::raw($content, function($message) use ($toEmail, $subject) {
+                $message->to($toEmail)
+                        ->subject($subject);
+            });
+        } catch (\Throwable $mailException) {
+            Log::error('SMTP OTP resend delivery failed: ' . $mailException->getMessage(), [
+                'email' => $toEmail,
+                'otp' => $newOtp
+            ]);
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Failed to send OTP verification email. Please check your mail configuration.'], 500);
+            }
+            return back()->with('error', 'Failed to send OTP verification email. Please check your mail configuration.');
+        }
 
         Log::info("New OTP for {$registrationData['number']}: $newOtp");
     
