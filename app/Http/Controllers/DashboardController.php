@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Blog;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -124,49 +125,50 @@ class DashboardController extends Controller
     public function publishBlog(Request $request)
     {
         // Validate the form data
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
+        $request->validate([
+            'title'          => 'required|max:255',
+            'content'        => 'required',
             'thumbnailImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnailUrl'   => 'nullable|url|max:2048',
         ]);
 
-        // Handle file upload
+        $resolvedThumbnail = null;
+
+        // Priority 1: uploaded file takes precedence over URL
         if ($request->hasFile('thumbnailImage')) {
-            // Delete old thumbnail if updating
-            if ($request->editblogid && $blog = Blog::find($request->editblogid)) {
-                Storage::delete('public/' . $blog->thumbnail);
+            // If updating, delete the old stored thumbnail (skip if it's an external URL)
+            if ($request->editblogid && $existingBlog = Blog::find($request->editblogid)) {
+                if ($existingBlog->thumbnail && !str_starts_with($existingBlog->thumbnail, 'http')) {
+                    Storage::delete('public/' . $existingBlog->thumbnail);
+                }
             }
-            // Store new thumbnail
-            $path = $request->file('thumbnailImage')->store('blog-thumbnails', 'public');
-            $validatedData['thumbnailImage'] = $path;
+            $resolvedThumbnail = $request->file('thumbnailImage')->store('blog-thumbnails', 'public');
+        }
+        // Priority 2: URL input (only when no file was uploaded)
+        elseif ($request->filled('thumbnailUrl')) {
+            $resolvedThumbnail = $request->input('thumbnailUrl');
         }
 
-        // get the blog id in case of edit blog
+        // Handle updating an existing blog
         $blogID = $request->editblogid ?? null;
-        if($blogID){
-            // Update existing blog
-            $blog = Blog::findOrFail($blogID);
-            // When editing blog if the input field for thumbnail is empty then assign the existing thumbnail and update the blog
-            if(!isset($validatedData['thumbnailImage'])){
-                $validatedData['thumbnailImage'] = $blog['thumbnail'];
-            }
-
-            $blog->title = $validatedData['title'];
-            $blog->description = $validatedData['content'];
-            $blog->thumbnail = $validatedData['thumbnailImage'];
+        if ($blogID) {
+            $blog              = Blog::findOrFail($blogID);
+            $blog->title       = $request->input('title');
+            $blog->description = $request->input('content');
+            // Keep the existing thumbnail if no new one was provided
+            $blog->thumbnail   = $resolvedThumbnail ?? $blog->thumbnail;
             $blog->save();
             return redirect()->back()->with('status', 'Blog updated successfully!');
         }
-        
+
         // Create a new blog post
-        $blog = new Blog();
-        $blog->title = $validatedData['title'];
-        $blog->description = $validatedData['content'];
-        $blog->thumbnail = $validatedData['thumbnailImage'] ?? '';
-        $blog->created_by = Auth::user()->user_id;
+        $blog              = new Blog();
+        $blog->title       = $request->input('title');
+        $blog->description = $request->input('content');
+        $blog->thumbnail   = $resolvedThumbnail ?? '';
+        $blog->created_by  = Auth::user()->user_id;
         $blog->save();
 
-        // Redirect or return a response
         return redirect()->back()->with('status', 'Blog published successfully!');
     }
 
@@ -218,5 +220,96 @@ class DashboardController extends Controller
             return redirect()->back()->withErrors('ErrorMSG', 'Unauthorized action!');
         }
         return view('templates/dashboard-parts/addblog', compact('user', 'blog'));
+    }
+
+    // Media Library view page
+    public function mediaLibrary()
+    {
+        $user = Auth::user();
+        // Fetch all media uploaded by the user
+        $mediaList = Media::where('user_id', $user->user_id)->orderBy('created_at', 'desc')->get();
+
+        // Check attachments for each media item
+        $mediaList->each(function ($media) {
+            $attachedBlogs = collect();
+            $path = $media->filepath; // e.g. media/filename.jpg
+            $url = Storage::url($path);
+
+            // Fetch all blogs
+            $blogs = Blog::all();
+
+            foreach ($blogs as $blog) {
+                $isAttached = false;
+                
+                // Check if it is the blog's cover thumbnail
+                if ($blog->thumbnail === $path) {
+                    $isAttached = true;
+                }
+                // Check if it is embedded in description HTML
+                elseif (str_contains($blog->description, $path) || ($url && str_contains($blog->description, $url))) {
+                    $isAttached = true;
+                }
+
+                if ($isAttached) {
+                    $attachedBlogs->push([
+                        'id' => $blog->id,
+                        'title' => $blog->title,
+                    ]);
+                }
+            }
+
+            $media->attached_blogs = $attachedBlogs;
+        });
+
+        return view('templates/dashboard-parts/media', compact('user', 'mediaList'));
+    }
+
+    // Media upload handler
+    public function uploadMedia(Request $request)
+    {
+        $request->validate([
+            'files' => 'required',
+            'files.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // max 5MB per image
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                // Store file in 'public/media' folder
+                $path = $file->store('media', 'public');
+
+                Media::create([
+                    'user_id' => $user->user_id,
+                    'filename' => $file->getClientOriginalName(),
+                    'filepath' => $path,
+                    'mime_type' => $file->getClientMimeType(),
+                    'file_size' => $file->getSize(),
+                ]);
+            }
+
+            return redirect()->back()->with('status', 'Images uploaded successfully!');
+        }
+
+        return redirect()->back()->withErrors(['files' => 'No files uploaded.']);
+    }
+
+    // Media delete handler
+    public function deleteMedia($id)
+    {
+        $media = Media::findOrFail($id);
+
+        // Ensure authorization
+        if ($media->user_id !== Auth::user()->user_id) {
+            return redirect()->back()->withErrors(['error' => 'Unauthorized action!']);
+        }
+
+        // Delete from storage
+        Storage::delete('public/' . $media->filepath);
+
+        // Delete database record
+        $media->delete();
+
+        return redirect()->back()->with('status', 'Image deleted successfully!');
     }
 }

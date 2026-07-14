@@ -8,53 +8,53 @@
             <a href="{{ route('home') }}" class="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 hover:opacity-95 transition-opacity font-sans">
                 Thought Threads
             </a>
-            <h2 class="mt-6 text-2xl font-bold text-slate-200">Create your account</h2>
-            <p class="mt-2 text-sm text-slate-400">
+            <h2 class="mt-6 text-2xl font-bold text-slate-800 dark:text-slate-200">Create your account</h2>
+            <p class="mt-2 text-sm text-slate-550 dark:text-slate-400">
                 Join our community of thinkers and writers
             </p>
         </div>
 
         <!-- Form Card Container -->
-        <div class="bg-slate-900/40 backdrop-blur-xl border border-slate-850 p-8 rounded-3xl shadow-2xl space-y-6">
+        <div class="bg-white dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-slate-850 p-8 rounded-3xl shadow-lg dark:shadow-2xl space-y-6">
             <form action="{{ url('registerUser') }}" method="post" class="space-y-4" id="registerForm">
                 @csrf
                 
                 <!-- Name -->
                 <div class="space-y-1">
-                    <label for="name" class="block text-sm font-semibold text-slate-300">Full Name <span class="text-rose-500">*</span></label>
-                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm" 
+                    <label for="name" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Full Name <span class="text-rose-500">*</span></label>
+                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans" 
                            type="text" name="name" id="name" value="{{ old('name') }}" placeholder="John Doe" required autocomplete="name">
                     <span class="text-rose-400 text-xs font-semibold">@error('name') {{ $message }} @enderror</span>
                 </div>
 
                 <!-- Email -->
                 <div class="space-y-1">
-                    <label for="email" class="block text-sm font-semibold text-slate-300">Email Address <span class="text-rose-500">*</span></label>
-                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm" 
+                    <label for="email" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Email Address <span class="text-rose-500">*</span></label>
+                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans" 
                            type="email" name="email" id="email" value="{{ old('email') }}" placeholder="john@example.com" required autocomplete="email">
                     <span class="errorbox text-rose-400 text-xs font-semibold">@error('email') {{ $message }} @enderror</span>
                 </div>
 
                 <!-- Phone -->
                 <div class="space-y-1">
-                    <label for="number" class="block text-sm font-semibold text-slate-300">Phone Number <span class="text-rose-500">*</span></label>
-                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm" 
+                    <label for="number" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Phone Number <span class="text-rose-500">*</span></label>
+                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans" 
                            type="text" name="number" id="number" value="{{ old('number') }}" placeholder="+1234567890" required>
                     <span class="errorbox text-rose-400 text-xs font-semibold">@error('number') {{ $message }} @enderror</span>
                 </div>
 
                 <!-- Password -->
                 <div class="space-y-1">
-                    <label for="password" class="block text-sm font-semibold text-slate-300">Password <span class="text-rose-500">*</span></label>
-                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm" 
+                    <label for="password" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Password <span class="text-rose-500">*</span></label>
+                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans" 
                            type="password" name="password" id="password" placeholder="••••••••" required autocomplete="new-password">
                     <span class="errorbox text-rose-400 text-xs font-semibold">@error('password') {{ $message }} @enderror</span>
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="space-y-1">
-                    <label for="password_confirmation" class="block text-sm font-semibold text-slate-300">Confirm Password <span class="text-rose-500">*</span></label>
-                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm" 
+                    <label for="password_confirmation" class="block text-sm font-semibold text-slate-650 dark:text-slate-300">Confirm Password <span class="text-rose-500">*</span></label>
+                    <input class="w-full px-4 py-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm font-sans" 
                            type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" required autocomplete="new-password">
                     <span class="errorbox text-rose-400 text-xs font-semibold">@error('password_confirmation') {{ $message }} @enderror</span>
                 </div>
@@ -67,10 +67,9 @@
                 </div>
             </form>
 
-            <div class="relative flex py-1 items-center">
-                <div class="flex-grow border-t border-slate-800/80"></div>
+            <div class="relative flex py-2 items-center">
                 <div class="flex-grow border-t border-slate-200 dark:border-slate-800/80"></div>
-                <span class="flex-shrink mx-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Or continue with</span>
+                <span class="flex-shrink mx-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider font-sans">Or continue with</span>
                 <div class="flex-grow border-t border-slate-200 dark:border-slate-800/80"></div>
             </div>
 

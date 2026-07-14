@@ -29,11 +29,13 @@
 </head>
 <body class="bg-slate-50 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-800 dark:text-slate-100 flex flex-col min-h-screen antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-250">
     {{-- Include Header --}}
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+    @if(!Request::routeIs('login') && !Request::routeIs('register') && !Request::is('dashboard*'))
         @include('includes.header')
     @endif
 
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+    @if(Request::is('dashboard*'))
+        <div class="flex flex-col w-full min-h-screen bg-[#f0f2f5] dark:bg-[#0c0d10]">
+    @elseif(!Request::routeIs('login') && !Request::routeIs('register'))
         <div class="flex flex-grow max-w-1200 mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
     @else
         <div class="flex flex-col max-w-1200 mx-auto w-full h-dvh px-4 sm:px-6">
@@ -42,7 +44,7 @@
     </div>
 
     {{-- Include Footer --}}
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
+    @if(!Request::routeIs('login') && !Request::routeIs('register') && !Request::is('dashboard*'))
         @include('includes.footer')
     @endif
 

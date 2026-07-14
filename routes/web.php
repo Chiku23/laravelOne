@@ -61,6 +61,10 @@ Route::prefix('dashboard')->group(function(){
     Route::get('/update-password', [DashboardController::class,'updatePassword'])->name('updatepassword');
     Route::post('/update-password/updateUserPassword', [DashboardController::class,'updateUserPassword'])->name('updateUserPassword');
 
+    Route::get('/media', [DashboardController::class, 'mediaLibrary'])->name('media');
+    Route::post('/media/upload', [DashboardController::class, 'uploadMedia'])->name('media.upload');
+    Route::delete('/media/{id}', [DashboardController::class, 'deleteMedia'])->name('media.delete');
+
     Route::delete('/delete-blog/{id}', [DashboardController::class, 'deleteBlog'])->name('blog.delete');
     Route::post('/add-blog', [DashboardController::class, 'editBlog'])->name('blog.edit');
 });

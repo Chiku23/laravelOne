@@ -22,6 +22,28 @@ export default {
                 '1200': '1200px',
             },
             colors: {
+                slate: {
+                    150: '#edf2f7',
+                    205: '#e2e8f0',
+                    250: '#cbd5e1',
+                    350: '#94a3b8',
+                    450: '#64748b',
+                    550: '#475569',
+                    650: '#334155',
+                    850: '#161e2e',
+                },
+                indigo: {
+                    550: '#5850ec',
+                    650: '#493ee4',
+                    755: '#3f37c9',
+                },
+                emerald: {
+                    550: '#059669',
+                },
+                amber: {
+                    550: '#d97706',
+                    650: '#b45309',
+                },
                 primary: {
                     DEFAULT: '#ffffff', // White text for contrast
                     light: '#f3f4f6', // Light gray for hover effects

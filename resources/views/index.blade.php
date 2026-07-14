@@ -34,7 +34,7 @@
                         <article class="blogs flex flex-col sm:flex-row p-6 bg-white dark:bg-slate-900/30 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-850 hover:border-slate-300 dark:hover:border-slate-800 hover:shadow-indigo-500/5 hover:shadow-xl transition-all duration-300 gap-6">
                             <!-- Thumbnail -->
                             <div class="imageBox w-full sm:w-[30%] min-w-[200px] h-[180px] rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-950 border border-slate-200 dark:border-slate-850">
-                                <img src="{{($blog->thumbnail) ? asset('/storage/'.$blog->thumbnail) : asset('/images/thumbnail-placeholder.jpg')}}" alt="thumbnail-image" class="object-cover h-full w-full hover:scale-105 transition-transform duration-500">
+                                <img src="{{ $blog->thumbnail ? (str_starts_with($blog->thumbnail, 'http') ? $blog->thumbnail : asset('/storage/'.$blog->thumbnail)) : asset('/images/thumbnail-placeholder.jpg') }}" alt="thumbnail-image" class="object-cover h-full w-full hover:scale-105 transition-transform duration-500">
                             </div>
                             
                             <!-- Content -->

@@ -20,7 +20,7 @@
     <!-- Image Banner -->
     <div class="blogImage w-full h-[320px] sm:h-[450px] rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 mb-10 shadow-sm dark:shadow-2xl">
         <img class="w-full h-full object-cover" 
-             src="{{$blog->thumbnail ? asset('/storage/'.$blog->thumbnail) : asset("/images/thumbnail-placeholder.jpg") }}" 
+             src="{{ $blog->thumbnail ? (str_starts_with($blog->thumbnail, 'http') ? $blog->thumbnail : asset('/storage/'.$blog->thumbnail)) : asset('/images/thumbnail-placeholder.jpg') }}" 
              alt="Blog banner image">
     </div>
 
